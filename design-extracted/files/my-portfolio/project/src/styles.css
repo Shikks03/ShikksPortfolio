@@ -1,0 +1,292 @@
+/* =================================================================
+   ELDEN-INSPIRED PORTFOLIO — base styles
+   ================================================================= */
+
+@import url('https://fonts.googleapis.com/css2?family=Marcellus+SC&family=Marcellus&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400;1,500;1,600&family=Cormorant+Unicase:wght@400;500;600;700&family=EB+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=Cinzel:wght@400;500;600;700;800&display=swap');
+
+:root {
+  /* Palette — faithful Elden Ring */
+  --void: #07060a;
+  --void-2: #0d0b10;
+  --ink: #16131a;
+  --stone: #2a2520;
+  --stone-2: #3b332b;
+  --parchment: #d9c9a3;
+  --parchment-2: #b9a47a;
+  --parchment-dim: #8a7a5a;
+  --gold: #d4a851;
+  --gold-bright: #f1d27a;
+  --gold-deep: #8a6a2c;
+  --ember: #c47a3e;
+  --blood: #7a2e1f;
+  --rune-glow: #f5d98a;
+
+  --serif: "Cormorant Garamond", "EB Garamond", Georgia, serif;
+  --display: "Marcellus SC", "Cinzel", "Cormorant Unicase", serif;
+  --display-mixed: "Marcellus", "Cormorant Garamond", serif;
+  --ui: "Marcellus", "EB Garamond", Georgia, serif;
+
+  /* anim speed multiplier (controlled by Tweaks) */
+  --speed: 1;
+  --grain-opacity: 0.18;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html, body, #root { width: 100%; height: 100%; overflow: hidden; }
+
+body {
+  background: var(--void);
+  color: var(--parchment);
+  font-family: var(--serif);
+  font-size: 16px;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: geometricPrecision;
+  cursor: none;
+  user-select: none;
+}
+
+/* =================================================================
+   CUSTOM CURSOR
+   ================================================================= */
+.cursor {
+  position: fixed;
+  top: 0; left: 0;
+  pointer-events: none;
+  z-index: 9999;
+  mix-blend-mode: screen;
+  transform: translate(-50%, -50%);
+  transition: opacity .25s ease;
+}
+.cursor-trail {
+  position: fixed; top: 0; left: 0;
+  pointer-events: none; z-index: 9998;
+  width: 36px; height: 36px;
+  border: 1px solid rgba(212,168,81,.4);
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+  transition: width .3s, height .3s, border-color .3s, opacity .25s;
+  mix-blend-mode: screen;
+}
+.cursor.hovering + .cursor-trail,
+.cursor-trail.hovering {
+  width: 56px; height: 56px;
+  border-color: rgba(241,210,122,.85);
+}
+body.cursor-rune .cursor { filter: drop-shadow(0 0 4px var(--gold)); }
+
+/* =================================================================
+   GRAIN OVERLAY (controlled by Tweaks)
+   ================================================================= */
+.grain {
+  position: fixed;
+  inset: -20%;
+  pointer-events: none;
+  z-index: 9000;
+  opacity: var(--grain-opacity);
+  mix-blend-mode: overlay;
+  background-image: url("data:image/svg+xml;utf8,<svg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0.85  0 0 0 0 0.78  0 0 0 0 0.55  0 0 0 1 0'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");
+  animation: grain-shift calc(0.9s / var(--speed)) steps(6) infinite;
+}
+@keyframes grain-shift {
+  0%   { transform: translate(0, 0); }
+  20%  { transform: translate(-3%, 2%); }
+  40%  { transform: translate(2%, -3%); }
+  60%  { transform: translate(-2%, -2%); }
+  80%  { transform: translate(3%, 3%); }
+  100% { transform: translate(0, 0); }
+}
+
+/* Vignette */
+.vignette {
+  position: fixed; inset: 0;
+  pointer-events: none; z-index: 100;
+  background:
+    radial-gradient(ellipse at center, transparent 30%, rgba(0,0,0,.55) 80%, rgba(0,0,0,.9) 100%),
+    radial-gradient(ellipse at center, transparent 60%, rgba(7,6,10,.5) 100%);
+}
+
+/* =================================================================
+   SHARED TYPE
+   ================================================================= */
+.title-disp {
+  font-family: var(--display);
+  font-weight: 400;
+  letter-spacing: .14em;
+  color: var(--parchment);
+  text-shadow:
+    0 0 24px rgba(0,0,0,.8),
+    0 2px 0 rgba(0,0,0,.6),
+    0 1px 0 rgba(255,255,255,.04);
+}
+.title-disp.gold {
+  font-weight: 400;
+  letter-spacing: .18em;
+  /* Metallic engraved gold — gradient-fill via background-clip */
+  color: transparent;
+  background: linear-gradient(180deg,
+    #fff3c1 0%,
+    #f1d27a 22%,
+    #d4a851 48%,
+    #a17a35 70%,
+    #c9a050 88%,
+    #8a6a2c 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  filter:
+    drop-shadow(0 0 22px rgba(212,168,81,.32))
+    drop-shadow(0 0 6px rgba(241,210,122,.45))
+    drop-shadow(0 2px 0 rgba(0,0,0,.55));
+}
+.eyebrow {
+  font-family: var(--display);
+  font-size: 11px;
+  letter-spacing: .48em;
+  text-transform: uppercase;
+  color: var(--parchment-dim);
+  font-weight: 400;
+}
+.italic-serif { font-style: italic; font-family: var(--serif); }
+
+/* =================================================================
+   ER MENU ITEM
+   ================================================================= */
+.menu-item {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 12px 4px 12px 30px;
+  font-family: var(--display);
+  font-weight: 400;
+  font-size: 17px;
+  letter-spacing: .26em;
+  text-transform: uppercase;
+  color: var(--parchment-dim);
+  cursor: none;
+  transition: color calc(.22s / var(--speed)) ease, padding-left calc(.22s / var(--speed)) ease, letter-spacing calc(.3s / var(--speed)) ease;
+}
+.menu-item::before {
+  content: "";
+  position: absolute;
+  left: 0; top: 50%;
+  width: 18px; height: 1px;
+  background: currentColor;
+  transform: translateY(-50%) scaleX(0);
+  transform-origin: left center;
+  opacity: 0;
+  transition: transform calc(.3s / var(--speed)) ease, opacity calc(.3s / var(--speed)) ease;
+}
+.menu-item:hover, .menu-item.active {
+  color: var(--gold-bright);
+  padding-left: 42px;
+  letter-spacing: .32em;
+  text-shadow: 0 0 14px rgba(241,210,122,.55), 0 0 2px rgba(241,210,122,.8);
+}
+.menu-item:hover::before, .menu-item.active::before {
+  transform: translateY(-50%) scaleX(1);
+  opacity: 1;
+  box-shadow: 0 0 10px rgba(241,210,122,.7);
+}
+.menu-item .num {
+  font-family: var(--display);
+  font-size: 10px;
+  letter-spacing: .2em;
+  color: var(--parchment-dim);
+  opacity: .55;
+  margin-left: auto;
+  padding-left: 24px;
+}
+
+/* =================================================================
+   BUTTONS / ER PROMPT
+   ================================================================= */
+.er-prompt {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  font-family: var(--display);
+  font-size: 11px;
+  letter-spacing: .3em;
+  text-transform: uppercase;
+  color: var(--parchment-dim);
+}
+.er-prompt .key {
+  display: inline-grid;
+  place-items: center;
+  min-width: 22px; height: 22px;
+  padding: 0 6px;
+  border: 1px solid rgba(212,168,81,.5);
+  border-radius: 3px;
+  color: var(--gold-bright);
+  font-family: var(--ui);
+  font-size: 11px;
+  background: rgba(212,168,81,.05);
+}
+
+/* =================================================================
+   ORNAMENTAL DIVIDERS
+   ================================================================= */
+.ornament {
+  display: flex; align-items: center; gap: 14px;
+  color: var(--gold-deep);
+}
+.ornament::before, .ornament::after {
+  content: "";
+  flex: 1;
+  height: 1px;
+  background: linear-gradient(to right, transparent, currentColor, transparent);
+  opacity: .55;
+}
+.ornament svg { width: 14px; height: 14px; opacity: .8; flex: none; }
+
+/* =================================================================
+   SCROLLBAR
+   ================================================================= */
+.scroll::-webkit-scrollbar { width: 6px; }
+.scroll::-webkit-scrollbar-track { background: transparent; }
+.scroll::-webkit-scrollbar-thumb { background: rgba(212,168,81,.25); border-radius: 3px; }
+
+/* =================================================================
+   AMBIENT EMBER ANIMATION
+   ================================================================= */
+@keyframes ember-rise {
+  0%   { transform: translate(0, 100vh) scale(0.6); opacity: 0; }
+  10%  { opacity: 1; }
+  90%  { opacity: .9; }
+  100% { transform: translate(var(--drift, 40px), -10vh) scale(1.1); opacity: 0; }
+}
+@keyframes mist-drift {
+  0%, 100% { transform: translate3d(0,0,0); }
+  50%      { transform: translate3d(-3%, 1%, 0); }
+}
+@keyframes pulse-glow {
+  0%, 100% { opacity: .55; filter: blur(0px); }
+  50%      { opacity: 1;   filter: blur(.4px); }
+}
+@keyframes slow-spin {
+  to { transform: rotate(360deg); }
+}
+@keyframes shimmer {
+  0%, 100% { opacity: .55; }
+  50%      { opacity: 1; }
+}
+
+/* =================================================================
+   PAGE TRANSITION (overlay wipe)
+   ================================================================= */
+.page-wipe {
+  position: fixed; inset: 0;
+  z-index: 8500;
+  pointer-events: none;
+  background:
+    radial-gradient(circle at 50% 50%, rgba(241,210,122,.15), transparent 40%),
+    linear-gradient(180deg, #000 0%, #07060a 50%, #000 100%);
+}
+
+/* utility */
+.flex { display: flex; }
+.col  { flex-direction: column; }
+.center { align-items: center; justify-content: center; }
+.gap-2 { gap: 8px; } .gap-3 { gap: 12px; } .gap-4 { gap: 16px; } .gap-6 { gap: 24px; } .gap-8 { gap: 32px; }
+.absfill { position: absolute; inset: 0; }
+.relative { position: relative; }

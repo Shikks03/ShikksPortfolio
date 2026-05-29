@@ -1,0 +1,35 @@
+# dependencies (match nested copies anywhere, e.g. design-extracted/)
+node_modules/
+/.pnp
+.pnp.js
+
+# next.js / build output
+.next/
+/out/
+/build
+*.tsbuildinfo
+next-env.d.ts
+
+# testing / coverage
+/coverage
+
+# local env files
+.env
+.env*.local
+
+# editor / OS
+.DS_Store
+Thumbs.db
+.idea
+.vscode
+
+# Claude Code personal/local settings
+.claude/settings.local.json
+
+# logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# scratch: design mockups + verification screenshots (regenerable)
+/mockups/
