@@ -1,5 +1,6 @@
 'use client';
 
+import { useState, useEffect, useRef, useCallback } from 'react';
 import { motion } from 'framer-motion';
 import { PORTFOLIO_DATA } from '@/data/portfolio';
 import EmberField from '@/components/shared/EmberField';
@@ -199,6 +200,72 @@ function Portrait() {
 
 export default function AchievementsPage({ onBack }: { onBack: () => void }) {
   const a = PORTFOLIO_DATA.achievements;
+  const [liveRunes, setLiveRunes]     = useState<number | null>(null);
+  const [displayRunes, setDisplayRunes] = useState(1);
+  const displayRef   = useRef(1);
+  const fetchDoneRef = useRef(false);
+  const countRafRef  = useRef<number>();
+  const animRafRef   = useRef<number>();
+
+  // Ease-out animate to a target value from wherever displayRef currently sits.
+  const animateTo = useCallback((target: number) => {
+    if (animRafRef.current) cancelAnimationFrame(animRafRef.current);
+    const start = displayRef.current;
+    const startTime = performance.now();
+    const duration = 700;
+    function frame(now: number) {
+      const t = Math.min((now - startTime) / duration, 1);
+      const eased = 1 - Math.pow(1 - t, 3); // ease-out cubic
+      const val = Math.round(start + (target - start) * eased);
+      displayRef.current = val;
+      setDisplayRunes(val);
+      if (t < 1) animRafRef.current = requestAnimationFrame(frame);
+    }
+    animRafRef.current = requestAnimationFrame(frame);
+  }, []);
+
+  // Rapid-counting phase while the fetch is in flight.
+  useEffect(() => {
+    let last = performance.now();
+    function tick(now: number) {
+      if (fetchDoneRef.current) return;
+      if (now - last >= 55) {
+        displayRef.current += Math.floor(Math.random() * 55 + 15);
+        setDisplayRunes(displayRef.current);
+        last = now;
+      }
+      countRafRef.current = requestAnimationFrame(tick);
+    }
+    countRafRef.current = requestAnimationFrame(tick);
+    // Safety: if fetch never resolves, settle on static value after 8 s.
+    const timeout = setTimeout(() => {
+      if (fetchDoneRef.current) return; // fetch already resolved, don't clobber it
+      fetchDoneRef.current = true;
+      animateTo(a.runes);
+    }, 8000);
+    return () => {
+      if (countRafRef.current) cancelAnimationFrame(countRafRef.current);
+      clearTimeout(timeout);
+    };
+  }, [animateTo, a.runes]);
+
+  // Fetch live commit count.
+  useEffect(() => {
+    fetch('/api/github-stats')
+      .then(r => r.json())
+      .then(d => { if (d.commits != null) setLiveRunes(d.commits); })
+      .catch(() => {});
+  }, []);
+
+  // Once fetch resolves, stop the counter and ease to the real number.
+  useEffect(() => {
+    if (liveRunes === null) return;
+    fetchDoneRef.current = true;
+    animateTo(liveRunes);
+  }, [liveRunes, animateTo]);
+
+  const runesLive = liveRunes != null;
+
   return (
     <div style={{ position: 'absolute', inset: 0, overflow: 'hidden' }}>
       <div style={{
@@ -254,8 +321,18 @@ export default function AchievementsPage({ onBack }: { onBack: () => void }) {
             </div>
             <div style={{ width: 1, height: 50, background: 'rgba(212,168,81,.3)' }} />
             <div style={{ textAlign: 'center' }}>
-              <div className="eyebrow" style={{ color: 'var(--gold-deep)' }}>Runes</div>
-              <div style={{ fontFamily: 'var(--display)', fontSize: 24, color: 'var(--gold-bright)', fontWeight: 600, fontVariantNumeric: 'tabular-nums' }}>{a.runes.toLocaleString()}</div>
+              <div style={{ display: 'flex', alignItems: 'center', gap: 5, justifyContent: 'center' }}>
+                <div className="eyebrow" style={{ color: 'var(--gold-deep)' }}>Runes</div>
+                {runesLive && (
+                  <div title="Live commit count" style={{
+                    width: 6, height: 6, borderRadius: '50%',
+                    background: '#6fcf6f',
+                    boxShadow: '0 0 6px rgba(111,207,111,.8)',
+                    flexShrink: 0,
+                  }} />
+                )}
+              </div>
+              <div style={{ fontFamily: 'var(--display)', fontSize: 24, color: 'var(--gold-bright)', fontWeight: 600, fontVariantNumeric: 'tabular-nums' }}>{displayRunes.toLocaleString()}</div>
             </div>
           </div>
         </div>

@@ -14,6 +14,7 @@ export interface Project {
   tags: string[];
   desc: string;
   github: string;
+  url?: string;
   xp: number;
   yp: number;
 }
@@ -32,7 +33,7 @@ export interface PortfolioData {
   };
   contact: {
     intro: string;
-    handles: Array<{ label: string; value: string; href: string }>;
+    handles: Array<{ label: string; value: string; href: string; rune?: string; tint?: string }>;
   };
 }
 
@@ -72,6 +73,7 @@ export const PORTFOLIO_DATA: PortfolioData = {
       tags: ['Next.js', 'Tailwind', 'CMS'],
       desc: 'Annual student-org night-of-CS site. Schedules, talks, RSVPs — kept alive through three regimes of organizers.',
       github: 'https://github.com/Shikks03',
+      url: 'https://csnight.vercel.app',
       xp: 38, yp: 18,
     },
     {
@@ -87,6 +89,7 @@ export const PORTFOLIO_DATA: PortfolioData = {
       tags: ['Freelance', 'E-commerce', 'Brand'],
       desc: 'Storefront for a small bakery. Soft palette, careful motion. Real customers, real receipts.',
       github: 'https://github.com/Shikks03',
+      url: 'https://meowchi.vercel.app',
       xp: 56, yp: 28,
     },
     {
@@ -147,6 +150,7 @@ export const PORTFOLIO_DATA: PortfolioData = {
       tags: ['Freelance', 'Corporate', 'Marketing'],
       desc: 'Corporate site for a tech consultancy. Sober, fast, easy to maintain — exactly the brief.',
       github: 'https://github.com/Shikks03',
+      url: 'https://azerotech.vercel.app',
       xp: 78, yp: 76,
     },
   ],
@@ -190,11 +194,11 @@ export const PORTFOLIO_DATA: PortfolioData = {
   },
 
   contact: {
-    intro: 'Inscribe thy name and thy summons upon the stone. Such words travel far.',
+    intro: 'Three sealed stones bear the ways to reach me — strike one, and the way opens.',
     handles: [
-      { label: 'GitHub',   value: '/Shikks03',                      href: 'https://github.com/Shikks03' },
-      { label: 'LinkedIn', value: 'in/shikkari-ipil-94b5b4368/',   href: 'https://linkedin.com/in/shikkari-ipil-94b5b4368/' },
-      { label: 'Email',    value: 'shikkariipil@gmail.com',         href: 'mailto:shikkariipil@gmail.com' },
+      { label: 'GitHub',   value: 'github.com/Shikks03',      href: 'https://github.com/Shikks03',                           rune: 'github',   tint: '#8a93a6' },
+      { label: 'LinkedIn', value: 'in/shikkari-ipil',         href: 'https://www.linkedin.com/in/shikkari-ipil-94b5b4368/',  rune: 'linkedin', tint: '#3a6b8a' },
+      { label: 'Email',    value: 'shikkariipil@gmail.com',   href: 'mailto:shikkariipil@gmail.com',                         rune: 'email',    tint: '#c47a3e' },
     ],
   },
 };

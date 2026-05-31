@@ -246,6 +246,43 @@ const drawGeneric: RuneDraw = () => (
   </>
 );
 
+/* GitHub — git fork/branch: a stem rising to two branch-ends with nodes. */
+const drawGithub: RuneDraw = () => (
+  <>
+    <path d="M60,84 L60,53" />
+    <path d="M60,53 C60,45 70,40 76,36" />
+    <path d="M60,53 C60,45 50,40 44,36" />
+    <circle cx="60" cy="89" r="6" />
+    <circle cx="76" cy="31" r="5.5" />
+    <circle cx="44" cy="31" r="5.5" />
+    <path d="M55,65 L65,65" />
+  </>
+);
+
+/* LinkedIn — two interlocked chain links. */
+const drawLinkedin: RuneDraw = () => (
+  <>
+    <path d="M51,34 C44,28 36,28 33,35 C30,42 34,51 42,55 C46,57 50,57 54,55" />
+    <path d="M54,55 C61,51 66,43 64,36 C62,29 56,26 51,28 C48,29 45,32 45,35" />
+    <path d="M69,66 C76,72 84,72 87,65 C90,58 86,49 78,45 C74,43 70,43 66,45" />
+    <path d="M66,45 C59,49 54,57 56,64 C58,71 64,74 69,72 C72,71 75,68 75,65" />
+  </>
+);
+
+/* Email — sealed letter with a wax-cross seal at centre. */
+const drawEmail: RuneDraw = () => (
+  <>
+    <path d="M30,42 L30,85 L90,85 L90,42 Z" />
+    <path d="M30,42 L60,67 L90,42" />
+    <path d="M30,42 L60,30 L90,42" />
+    <circle cx="60" cy="55" r="7.5" />
+    <path d="M60,50 L60,60" />
+    <path d="M55,55 L65,55" />
+    <path d="M56.5,51.5 L63.5,58.5" />
+    <path d="M63.5,51.5 L56.5,58.5" />
+  </>
+);
+
 const RUNE_DRAWS: Record<string, RuneDraw> = {
   blinkbeat: drawBlink,
   csnight: drawCsnight,
@@ -254,6 +291,9 @@ const RUNE_DRAWS: Record<string, RuneDraw> = {
   quizgive: drawQuizgive,
   oversee: drawOversee,
   azerotech: drawAzerotech,
+  github: drawGithub,
+  linkedin: drawLinkedin,
+  email: drawEmail,
   _generic: drawGeneric,
 };
 

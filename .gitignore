@@ -33,3 +33,6 @@ yarn-error.log*
 
 # scratch: design mockups + verification screenshots (regenerable)
 /mockups/
+
+# scratch design mockups
+.mockups/

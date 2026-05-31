@@ -1,5 +1,6 @@
 'use client';
 
+import type React from 'react';
 import { getAudio } from '@/lib/audio';
 import type { Project } from '@/data/portfolio';
 import Ornament from '@/components/shared/Ornament';
@@ -41,22 +42,33 @@ function StatBar({ label, value, max = 99 }: { label: string; value: number; max
 interface StatPanelProps {
   project: Project | undefined;
   visible: boolean;
+  /** Which side of the screen to anchor the panel to. Defaults to 'right'. */
+  side?: 'left' | 'right';
+  onMouseEnter?: () => void;
+  onMouseLeave?: () => void;
+  onClick?: (e: React.MouseEvent) => void;
 }
 
-export default function StatPanel({ project, visible }: StatPanelProps) {
+export default function StatPanel({ project, visible, side = 'right', onMouseEnter, onMouseLeave, onClick }: StatPanelProps) {
   if (!project) return null;
+  // Slide in from the panel's own edge so the motion always reads as "emerging from the margin".
+  const restX = side === 'right' ? 40 : -40;
   return (
-    <div style={{
-      position: 'absolute',
-      right: 56,
-      top: '50%',
-      transform: `translateY(-50%) translateX(${visible ? 0 : 40}px)`,
-      opacity: visible ? 1 : 0,
-      transition: 'opacity .35s ease, transform .45s cubic-bezier(.2,.7,.2,1)',
-      width: 360,
-      pointerEvents: visible ? 'auto' : 'none',
-      zIndex: 30,
-    }}>
+    <div
+      onMouseEnter={onMouseEnter}
+      onMouseLeave={onMouseLeave}
+      onClick={onClick}
+      style={{
+        position: 'absolute',
+        [side]: 56,
+        top: '50%',
+        transform: `translateY(-50%) translateX(${visible ? 0 : restX}px)`,
+        opacity: visible ? 1 : 0,
+        transition: 'opacity .35s ease, transform .45s cubic-bezier(.2,.7,.2,1)',
+        width: 360,
+        pointerEvents: visible ? 'auto' : 'none',
+        zIndex: 30,
+      }}>
       <div style={{
         position: 'relative',
         padding: '28px 26px 22px',
@@ -146,40 +158,98 @@ export default function StatPanel({ project, visible }: StatPanelProps) {
           ))}
         </div>
 
-        <a href={project.github} target="_blank" rel="noopener noreferrer"
-           onClick={() => getAudio().confirm()}
-           onMouseEnter={() => getAudio().hover()}
-           className="acquire-btn"
-           style={{
-             display: 'flex', alignItems: 'center', justifyContent: 'space-between',
-             padding: '11px 16px',
-             textDecoration: 'none',
-             color: 'var(--gold-bright)',
-             fontFamily: 'var(--display)',
-             fontSize: 11,
-             letterSpacing: '.3em',
-             textTransform: 'uppercase',
-             border: '1px solid var(--gold-deep)',
-             background: 'linear-gradient(180deg, rgba(212,168,81,.08) 0%, rgba(212,168,81,.02) 100%)',
-             position: 'relative', overflow: 'hidden',
-           }}>
-          <span>Acquire · View Codex</span>
-          <span style={{ fontSize: 16 }}>↗</span>
-          <style>{`
-            .acquire-btn:hover {
-              color: #fff7d8 !important;
-              border-color: var(--gold-bright) !important;
-              box-shadow: 0 0 24px rgba(241,210,122,.3), inset 0 0 24px rgba(241,210,122,.08);
-            }
-            .acquire-btn::after {
-              content:""; position:absolute; inset:0;
-              background: linear-gradient(90deg, transparent, rgba(241,210,122,.3), transparent);
-              transform: translateX(-100%);
-              transition: transform .8s ease;
-            }
-            .acquire-btn:hover::after { transform: translateX(100%); }
-          `}</style>
-        </a>
+        {project.url ? (
+          <>
+            <a href={project.url} target="_blank" rel="noopener noreferrer"
+               onClick={() => getAudio().confirm()}
+               onMouseEnter={() => getAudio().hover()}
+               className="acquire-btn"
+               style={{
+                 display: 'flex', alignItems: 'center', justifyContent: 'space-between',
+                 padding: '11px 16px',
+                 textDecoration: 'none',
+                 color: 'var(--gold-bright)',
+                 fontFamily: 'var(--display)',
+                 fontSize: 11,
+                 letterSpacing: '.3em',
+                 textTransform: 'uppercase',
+                 border: '1px solid var(--gold-deep)',
+                 background: 'linear-gradient(180deg, rgba(212,168,81,.08) 0%, rgba(212,168,81,.02) 100%)',
+                 position: 'relative', overflow: 'hidden',
+               }}>
+              <span>Enter the Realm</span>
+              <span style={{ fontSize: 16 }}>↗</span>
+              <style>{`
+                .acquire-btn:hover {
+                  color: #fff7d8 !important;
+                  border-color: var(--gold-bright) !important;
+                  box-shadow: 0 0 24px rgba(241,210,122,.3), inset 0 0 24px rgba(241,210,122,.08);
+                }
+                .acquire-btn::after {
+                  content:""; position:absolute; inset:0;
+                  background: linear-gradient(90deg, transparent, rgba(241,210,122,.3), transparent);
+                  transform: translateX(-100%);
+                  transition: transform .8s ease;
+                }
+                .acquire-btn:hover::after { transform: translateX(100%); }
+              `}</style>
+            </a>
+            <a href={project.github} target="_blank" rel="noopener noreferrer"
+               onClick={() => getAudio().confirm()}
+               style={{
+                 display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 6,
+                 marginTop: 10,
+                 textDecoration: 'none',
+                 color: 'var(--parchment-dim)',
+                 fontFamily: 'var(--display)',
+                 fontSize: 9,
+                 letterSpacing: '.28em',
+                 textTransform: 'uppercase',
+                 opacity: 0.7,
+                 transition: 'opacity .3s',
+               }}
+               onMouseEnter={e => { (e.currentTarget as HTMLAnchorElement).style.opacity = '1'; getAudio().hover(); }}
+               onMouseLeave={e => { (e.currentTarget as HTMLAnchorElement).style.opacity = '.7'; }}>
+              <span>View Codex · GitHub</span>
+              <span style={{ fontSize: 11 }}>↗</span>
+            </a>
+          </>
+        ) : (
+          <a href={project.github} target="_blank" rel="noopener noreferrer"
+             onClick={() => getAudio().confirm()}
+             onMouseEnter={() => getAudio().hover()}
+             className="acquire-btn"
+             style={{
+               display: 'flex', alignItems: 'center', justifyContent: 'space-between',
+               padding: '11px 16px',
+               textDecoration: 'none',
+               color: 'var(--gold-bright)',
+               fontFamily: 'var(--display)',
+               fontSize: 11,
+               letterSpacing: '.3em',
+               textTransform: 'uppercase',
+               border: '1px solid var(--gold-deep)',
+               background: 'linear-gradient(180deg, rgba(212,168,81,.08) 0%, rgba(212,168,81,.02) 100%)',
+               position: 'relative', overflow: 'hidden',
+             }}>
+            <span>Acquire · View Codex</span>
+            <span style={{ fontSize: 16 }}>↗</span>
+            <style>{`
+              .acquire-btn:hover {
+                color: #fff7d8 !important;
+                border-color: var(--gold-bright) !important;
+                box-shadow: 0 0 24px rgba(241,210,122,.3), inset 0 0 24px rgba(241,210,122,.08);
+              }
+              .acquire-btn::after {
+                content:""; position:absolute; inset:0;
+                background: linear-gradient(90deg, transparent, rgba(241,210,122,.3), transparent);
+                transform: translateX(-100%);
+                transition: transform .8s ease;
+              }
+              .acquire-btn:hover::after { transform: translateX(100%); }
+            `}</style>
+          </a>
+        )}
       </div>
     </div>
   );

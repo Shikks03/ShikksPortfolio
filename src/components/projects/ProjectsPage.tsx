@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect, useRef, useMemo } from 'react';
+import React, { useState, useEffect, useRef, useMemo } from 'react';
 import { getAudio } from '@/lib/audio';
 import { PORTFOLIO_DATA, type Project } from '@/data/portfolio';
 import EmberField from '@/components/shared/EmberField';
@@ -127,8 +127,12 @@ function LeyLine({ a, b, state, bounds }: LeyLineProps) {
 export default function ProjectsPage({ onBack }: { onBack: () => void }) {
   const data = PORTFOLIO_DATA;
   const [hoveredId, setHoveredId] = useState<string | null>(null);
+  const [lockedId, setLockedId]   = useState<string | null>(null);
+  const [panelHovered, setPanelHovered] = useState(false);
   const [bounds, setBounds] = useState<Bounds>({ w: 1200, h: 700 });
   const fieldRef = useRef<HTMLDivElement>(null);
+  // Keeps the last-hovered project alive while the mouse is on the panel.
+  const pinnedProject = useRef<Project | undefined>(undefined);
 
   useEffect(() => {
     function measure() {
@@ -141,10 +145,21 @@ export default function ProjectsPage({ onBack }: { onBack: () => void }) {
     return () => window.removeEventListener('resize', measure);
   }, []);
 
-  const project = useMemo(
+  const sealProject = useMemo(
     () => data.projects.find(p => p.id === hoveredId),
     [data.projects, hoveredId]
   );
+  const lockedProject = useMemo(
+    () => data.projects.find(p => p.id === lockedId),
+    [data.projects, lockedId]
+  );
+
+  // When a seal is hovered, pin it so the panel can keep showing it while
+  // the mouse travels from the seal to the panel.
+  if (sealProject) pinnedProject.current = sealProject;
+
+  // Priority: hover > lock > panel-hover (using last pinned)
+  const project = sealProject ?? lockedProject ?? (panelHovered ? pinnedProject.current : undefined);
 
   const projectById = useMemo(() => {
     const m: Record<string, Project> = {};
@@ -153,7 +168,7 @@ export default function ProjectsPage({ onBack }: { onBack: () => void }) {
   }, [data.projects]);
 
   return (
-    <div style={{ position: 'absolute', inset: 0, overflow: 'hidden' }}>
+    <div onClick={() => setLockedId(null)} style={{ position: 'absolute', inset: 0, overflow: 'hidden' }}>
 
       {/* ── Layer 1: background gradient ───────────────────────────── */}
       <div style={{
@@ -250,23 +265,31 @@ export default function ProjectsPage({ onBack }: { onBack: () => void }) {
         {/* ── Layer 6: Seal nodes ──────────────────────────────────── */}
         {data.projects.map((p) => {
           const isHovered = hoveredId === p.id;
-          const isDimmed = !!hoveredId && !isHovered;
+          const isLocked  = lockedId  === p.id;
+          const isActive  = isHovered || isLocked;
+          // Dim only when hovering something else; a locked seal is never dimmed.
+          const isDimmed  = !!hoveredId && !isHovered && !isLocked;
           return (
             <div key={p.id}
               onMouseEnter={() => { setHoveredId(p.id); getAudio().carve(); }}
               onMouseLeave={() => setHoveredId(null)}
+              onClick={(e) => {
+                e.stopPropagation();
+                setLockedId(prev => prev === p.id ? null : p.id);
+                getAudio().confirm();
+              }}
               style={{
                 position: 'absolute',
                 left: `${p.xp}%`,
                 top: `${p.yp}%`,
-                transform: `translate(-50%, -50%) scale(${isHovered ? 1.05 : 1})`,
+                transform: `translate(-50%, -50%) scale(${isActive ? 1.05 : 1})`,
                 cursor: 'none',
-                zIndex: isHovered ? 12 : 10,
+                zIndex: isActive ? 12 : 10,
                 filter: isDimmed ? 'brightness(.55) saturate(.8)' : 'none',
                 transition: 'filter .5s ease, transform .45s cubic-bezier(.2,.7,.2,1)',
               }}>
               <div style={{ position: 'relative', width: 116, height: 116 }}>
-                <SealStone runeId={p.id} tint={p.tint} size={116} lit={isHovered} />
+                <SealStone runeId={p.id} tint={p.tint} size={116} lit={isActive} />
 
                 {/* Project name label */}
                 <div style={{
@@ -278,8 +301,8 @@ export default function ProjectsPage({ onBack }: { onBack: () => void }) {
                   fontSize: 10,
                   letterSpacing: '.28em',
                   textTransform: 'uppercase',
-                  color: isHovered ? 'var(--gold-bright)' : 'var(--parchment-dim)',
-                  textShadow: isHovered ? '0 0 12px rgba(241,210,122,.6)' : 'none',
+                  color: isActive ? 'var(--gold-bright)' : 'var(--parchment-dim)',
+                  textShadow: isActive ? '0 0 12px rgba(241,210,122,.6)' : 'none',
                   transition: 'color .4s, text-shadow .4s',
                   pointerEvents: 'none',
                 }}>
@@ -292,16 +315,25 @@ export default function ProjectsPage({ onBack }: { onBack: () => void }) {
       </div>
 
       {/* ── StatPanel ───────────────────────────────────────────────── */}
-      <StatPanel project={project} visible={!!project} />
+      {/* Anchor to the side opposite the hovered rune so the panel never
+          covers it (which would trigger a mouseleave/enter flicker loop). */}
+      <StatPanel
+        project={project}
+        visible={!!project}
+        side={project && project.xp > 50 ? 'left' : 'right'}
+        onMouseEnter={() => setPanelHovered(true)}
+        onMouseLeave={() => setPanelHovered(false)}
+        onClick={(e: React.MouseEvent) => e.stopPropagation()}
+      />
 
       {/* ── Bottom prompt ────────────────────────────────────────────── */}
       <div style={{
         position: 'absolute', bottom: 28, left: 64, zIndex: 20,
-        opacity: hoveredId ? 0 : 1,
+        opacity: (hoveredId || lockedId) ? 0 : 1,
         transition: 'opacity .3s',
       }}>
         <div className="er-prompt" style={{ color: 'var(--parchment-dim)' }}>
-          <span className="key">✦</span> Hover a stone &nbsp;·&nbsp; <span className="key">Click</span> the rune to enter
+          <span className="key">✦</span> Hover a stone &nbsp;·&nbsp; <span className="key">Click</span> to bind the seal
         </div>
       </div>
     </div>

@@ -250,6 +250,13 @@ body.cursor-rune .cursor { filter: drop-shadow(0 0 4px var(--gold)); }
   90%  { opacity: .9; }
   100% { transform: translate(var(--drift, 40px), -10vh) scale(1.1); opacity: 0; }
 }
+/* full-height variant: embers drift up across the entire viewport */
+@keyframes ember-rise-tall {
+  0%   { transform: translate(0, 8vh) scale(0.5); opacity: 0; }
+  8%   { opacity: 1; }
+  86%  { opacity: .85; }
+  100% { transform: translate(var(--drift, 40px), -104vh) scale(1.15); opacity: 0; }
+}
 @keyframes mist-drift {
   0%, 100% { transform: translate3d(0,0,0); }
   50%      { transform: translate3d(-3%, 1%, 0); }
@@ -279,6 +286,153 @@ body.cursor-rune .cursor { filter: drop-shadow(0 0 4px var(--gold)); }
 @keyframes fade-in {
   from { opacity: 0; }
   to   { opacity: 1; }
+}
+@keyframes door-reveal {
+  from { opacity: 0; transform: translateY(28px) scale(.975); }
+  to   { opacity: 1; transform: translateY(0) scale(1); }
+}
+@keyframes header-appear {
+  from { opacity: 0; transform: translateY(-14px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+@keyframes seal-appear {
+  from { opacity: 0; transform: translateY(18px) scale(.96); }
+  to   { opacity: 1; transform: translateY(0)    scale(1); }
+}
+@keyframes seam-pulse {
+  0%, 100% { opacity: 0.55; }
+  50%      { opacity: 0.82; }
+}
+@keyframes seam-glow-pulse {
+  0%, 100% { opacity: 0.35; }
+  50%      { opacity: 0.62; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .seam-light, .seam-glow { animation: none !important; }
+}
+
+/* =================================================================
+   CONTACT — "LIGHT FROM BEYOND" depth layers
+   God-rays from the seam, depth fog, drifting dust, breathing wards.
+   All scoped to the contact gate scene (cd- prefix).
+   ================================================================= */
+
+/* depth fog — far planes that seat the gate in atmosphere */
+.cd-fog {
+  position: absolute;
+  left: 50%; top: 46%;
+  transform: translate(-50%, -50%);
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 2;
+}
+.cd-fog-1 {
+  width: 560px; height: 520px;
+  background: radial-gradient(ellipse, rgba(196,122,62,.12), transparent 62%);
+  filter: blur(26px);
+  animation: cd-breathe 7s ease-in-out infinite;
+}
+.cd-fog-2 {
+  width: 340px; height: 520px;
+  background: radial-gradient(ellipse, rgba(241,200,90,.13), transparent 60%);
+  filter: blur(16px);
+  animation: cd-breathe 4.6s ease-in-out infinite;
+}
+
+/* god-rays — light from beyond, haloing the silhouette through the seam */
+.cd-godrays {
+  position: absolute;
+  left: 50%; top: 54%;
+  width: 520px; height: 760px;
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+  z-index: 3;
+  mix-blend-mode: screen;
+  -webkit-mask-image: radial-gradient(ellipse 60% 55% at 50% 50%, #000 30%, transparent 78%);
+          mask-image: radial-gradient(ellipse 60% 55% at 50% 50%, #000 30%, transparent 78%);
+}
+.cd-rays-spin {
+  position: absolute; inset: 0;
+  transform-origin: 50% 50%;
+  animation: cd-rayspin 30s linear infinite;
+}
+.cd-ray {
+  position: absolute;
+  left: 50%; top: 50%;
+  width: 2px; height: 130%;
+  transform-origin: 50% 0;
+  background: linear-gradient(to bottom, rgba(241,210,122,.5), rgba(241,200,90,.12) 40%, transparent 72%);
+  filter: blur(2px);
+}
+
+/* hot light leaking through the central seam (in front of the door) */
+.cd-seamhot {
+  position: absolute;
+  left: 50%; top: 6%;
+  width: 24px; height: 88%;
+  transform: translateX(-50%);
+  background: linear-gradient(to bottom, transparent, rgba(255,236,170,.42) 32%, rgba(255,244,200,.68) 50%, rgba(255,236,170,.42) 68%, transparent);
+  filter: blur(5px);
+  mix-blend-mode: screen;
+  pointer-events: none;
+  z-index: 26;
+  animation: cd-flicker 3.4s ease-in-out infinite;
+}
+.cd-archburst {
+  position: absolute;
+  left: 50%; top: 3%;
+  width: 200px; height: 120px;
+  transform: translate(-50%, -40%);
+  background: radial-gradient(ellipse at 50% 100%, rgba(241,210,122,.4), transparent 70%);
+  filter: blur(10px);
+  mix-blend-mode: screen;
+  pointer-events: none;
+  z-index: 26;
+  animation: cd-breathe 5s ease-in-out infinite;
+}
+
+/* the wards breathe slowly, as if the stone holds a heartbeat */
+.cd-ward-breathe {
+  animation: cd-ward-breathe 4.5s ease-in-out infinite;
+}
+
+/* dust motes drifting between the gate and the viewer */
+.cd-dust {
+  position: absolute; inset: 0;
+  pointer-events: none;
+  z-index: 16;
+}
+.cd-mote {
+  position: absolute;
+  border-radius: 50%;
+  background: rgba(241,220,160,.7);
+  box-shadow: 0 0 6px rgba(241,210,122,.55);
+  animation-name: cd-mote-float;
+  animation-timing-function: linear;
+  animation-iteration-count: infinite;
+}
+
+@keyframes cd-rayspin { to { transform: rotate(360deg); } }
+@keyframes cd-breathe { 0%, 100% { opacity: .5; } 50% { opacity: 1; } }
+@keyframes cd-flicker {
+  0%, 100% { opacity: .65; }
+  30%      { opacity: 1; }
+  45%      { opacity: .78; }
+  62%      { opacity: .95; }
+}
+@keyframes cd-ward-breathe {
+  0%, 100% { transform: translateY(0); }
+  50%      { transform: translateY(-3px); }
+}
+@keyframes cd-mote-float {
+  0%   { transform: translate(0, 0); opacity: 0; }
+  10%  { opacity: .8; }
+  90%  { opacity: .5; }
+  100% { transform: translate(var(--mdx, 20px), var(--mdy, -60px)); opacity: 0; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .cd-fog, .cd-rays-spin, .cd-seamhot, .cd-archburst,
+  .cd-ward-breathe, .cd-mote { animation: none !important; }
 }
 
 /* =================================================================

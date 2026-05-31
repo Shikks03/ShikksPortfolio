@@ -5,6 +5,8 @@ import { useState, useEffect } from 'react';
 interface EmberFieldProps {
   count?: number;
   intense?: number;
+  /** when true, embers rise across the full viewport instead of only the bottom band */
+  tall?: boolean;
 }
 
 function makeEmbers(count: number) {
@@ -23,7 +25,7 @@ function makeEmbers(count: number) {
   return a;
 }
 
-export default function EmberField({ count = 36, intense = 1 }: EmberFieldProps) {
+export default function EmberField({ count = 36, intense = 1, tall = false }: EmberFieldProps) {
   const [embers, setEmbers] = useState<ReturnType<typeof makeEmbers>>([]);
 
   useEffect(() => {
@@ -43,7 +45,7 @@ export default function EmberField({ count = 36, intense = 1 }: EmberFieldProps)
           background: 'radial-gradient(circle, rgba(241,210,122,1) 0%, rgba(196,122,62,.6) 50%, transparent 100%)',
           boxShadow: '0 0 6px rgba(241,210,122,.8), 0 0 12px rgba(196,122,62,.4)',
           opacity: e.opacity,
-          animation: `ember-rise ${e.dur}s linear ${e.delay}s infinite`,
+          animation: `${tall ? 'ember-rise-tall' : 'ember-rise'} ${e.dur}s linear ${e.delay}s infinite`,
           ['--drift' as string]: `${e.drift}px`,
         }} />
       ))}
