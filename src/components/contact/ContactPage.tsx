@@ -231,56 +231,106 @@ export default function ContactPage({ onBack }: { onBack: () => void }) {
                   onClick={() => getAudio().confirm()}
                 >
                   {/* LOCK — the seal seated concentrically inside its iron escutcheon */}
-                  <div
-                    className="cd-ward-breathe"
-                    style={{
-                      position: 'relative',
-                      width: SOCKET,
-                      height: SOCKET,
-                      display: 'grid',
-                      placeItems: 'center',
-                      animationDelay: `${i * -1.5}s`,
-                    }}
+                  {/* outer motion.div handles hover float + wobble; inner div keeps CSS breathing animation */}
+                  <motion.div
+                    animate={active
+                      ? { y: -8, scale: 1.04, rotate: [-1.5, 0.8, -0.3, 0] }
+                      : { y: 0, scale: 1, rotate: 0 }
+                    }
+                    transition={active
+                      ? {
+                          y: { type: 'spring', stiffness: 260, damping: 20 },
+                          scale: { type: 'spring', stiffness: 260, damping: 20 },
+                          rotate: { duration: 0.55, ease: [0.32, 0.72, 0, 1] },
+                        }
+                      : {
+                          y: { type: 'spring', stiffness: 200, damping: 26 },
+                          scale: { type: 'spring', stiffness: 200, damping: 26 },
+                          rotate: { duration: 0.3, ease: 'easeOut' },
+                        }
+                    }
+                    style={{ position: 'relative', display: 'grid', placeItems: 'center' }}
                   >
-                    {/* warm bloom behind the ward, ignited on hover */}
-                    <div aria-hidden="true" style={{
-                      position: 'absolute',
-                      width: SOCKET * 1.9,
-                      height: SOCKET * 1.9,
-                      borderRadius: '50%',
-                      background: 'radial-gradient(circle, rgba(241,210,122,.32) 0%, rgba(196,122,62,.16) 38%, transparent 70%)',
-                      opacity: active ? 1 : 0,
-                      transition: 'opacity .4s ease',
-                      pointerEvents: 'none',
-                      zIndex: 0,
-                    }} />
-
-                    {/* iron escutcheon ward-lock (behind the seal) */}
-                    <div style={{ position: 'absolute', inset: 0, display: 'grid', placeItems: 'center', zIndex: 1 }}>
-                      <LockSocket size={SOCKET} lit={active} tint={h.tint ?? '#b07a32'} seed={i} />
-                    </div>
-
-                    {/* the seal — grows out of the socket and glows on hover */}
-                    <motion.div
-                      animate={{ scale: active ? 1.2 : 1 }}
-                      transition={{ duration: 0.4, ease: [0.2, 0.7, 0.2, 1] }}
+                    <div
+                      className="cd-ward-breathe"
                       style={{
                         position: 'relative',
-                        zIndex: 2,
-                        filter: active
-                          ? 'drop-shadow(0 0 18px rgba(241,210,122,.6)) drop-shadow(0 0 40px rgba(196,122,62,.4))'
-                          : 'none',
-                        transition: 'filter .4s ease',
+                        width: SOCKET,
+                        height: SOCKET,
+                        display: 'grid',
+                        placeItems: 'center',
+                        animationDelay: `${i * -1.5}s`,
                       }}
                     >
-                      <SealStone
-                        runeId={h.rune ?? '_generic'}
-                        tint={h.tint ?? '#b07a32'}
-                        size={SEAL}
-                        lit={active}
+                      {/* expanding ripple ring — single pulse on hover entry */}
+                      {active && (
+                        <motion.div
+                          aria-hidden="true"
+                          key={`ripple-${i}`}
+                          initial={{ scale: 0.85, opacity: 0.65 }}
+                          animate={{ scale: 1.95, opacity: 0 }}
+                          transition={{ duration: 0.65, ease: [0.2, 0.6, 0.2, 1] }}
+                          style={{
+                            position: 'absolute',
+                            width: SOCKET,
+                            height: SOCKET,
+                            borderRadius: '50%',
+                            border: '1.5px solid rgba(241,210,122,.55)',
+                            pointerEvents: 'none',
+                            zIndex: 0,
+                          }}
+                        />
+                      )}
+
+                      {/* warm bloom — scales in from centre on hover */}
+                      <motion.div
+                        aria-hidden="true"
+                        animate={active
+                          ? { opacity: 1, scale: 1 }
+                          : { opacity: 0, scale: 0.65 }
+                        }
+                        transition={{ duration: 0.5, ease: [0.32, 0.72, 0, 1] }}
+                        style={{
+                          position: 'absolute',
+                          width: SOCKET * 1.9,
+                          height: SOCKET * 1.9,
+                          borderRadius: '50%',
+                          background: 'radial-gradient(circle, rgba(241,210,122,.32) 0%, rgba(196,122,62,.16) 38%, transparent 70%)',
+                          pointerEvents: 'none',
+                          zIndex: 0,
+                        }}
                       />
-                    </motion.div>
-                  </div>
+
+                      {/* iron escutcheon ward-lock (behind the seal) */}
+                      <div style={{ position: 'absolute', inset: 0, display: 'grid', placeItems: 'center', zIndex: 1 }}>
+                        <LockSocket size={SOCKET} lit={active} tint={h.tint ?? '#b07a32'} seed={i} />
+                      </div>
+
+                      {/* the seal — lifts out of the socket and glows on hover */}
+                      <motion.div
+                        animate={active
+                          ? { scale: 1.14, y: -5 }
+                          : { scale: 1, y: 0 }
+                        }
+                        transition={{ type: 'spring', stiffness: 320, damping: 22 }}
+                        style={{
+                          position: 'relative',
+                          zIndex: 2,
+                          filter: active
+                            ? 'drop-shadow(0 0 18px rgba(241,210,122,.6)) drop-shadow(0 0 40px rgba(196,122,62,.4))'
+                            : 'none',
+                          transition: 'filter .4s cubic-bezier(0.32,0.72,0,1)',
+                        }}
+                      >
+                        <SealStone
+                          runeId={h.rune ?? '_generic'}
+                          tint={h.tint ?? '#b07a32'}
+                          size={SEAL}
+                          lit={active}
+                        />
+                      </motion.div>
+                    </div>
+                  </motion.div>
 
                   {/* CAPTION */}
                   <div style={{

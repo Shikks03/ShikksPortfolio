@@ -36,3 +36,13 @@ yarn-error.log*
 
 # scratch design mockups
 .mockups/
+
+# Claude Code session/memory files
+.claude/
+.agents/
+skills-lock.json
+
+# scratch mockup folders and verification screenshots
+contact-depth-mockups/
+contact-lock-mockups/
+*.png
