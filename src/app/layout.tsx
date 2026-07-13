@@ -25,8 +25,8 @@ const marcellusSC = Marcellus_SC({
 });
 
 export const metadata: Metadata = {
-  title: 'Wanderer · A Portfolio of the Lands Coded',
-  description: 'A Portfolio of the Lands Coded',
+  title: "Shikkari's Portfolio",
+  description: "Shikkari's Portfolio",
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {

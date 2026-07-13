@@ -28,6 +28,8 @@ export interface PortfolioData {
     level: number;
     runes: number;
     class: string;
+    intro: string;
+    skills: Array<{ school: string; note: string; arts: string[] }>;
     stats: Array<{ key: string; val: number; note: string }>;
     timeline: Array<{ year: string; title: string; org: string; body: string }>;
   };
@@ -119,6 +121,7 @@ export const PORTFOLIO_DATA: PortfolioData = {
       stats: { ATK: 36, FAITH: 39, ARC: 55, SPD: 41 },
       tags: ['EdTech', 'Donations', 'Quiz Engine'],
       desc: 'A quiz platform where right answers fund causes. Learning that gives back, by design.',
+      url: 'https://quiz-give.vercel.app',
       github: 'https://github.com/Shikks03',
       xp: 22, yp: 70,
     },
@@ -170,7 +173,22 @@ export const PORTFOLIO_DATA: PortfolioData = {
     title: 'CHRONICLE OF DEEDS',
     level: 6,
     runes: 12480,
-    class: 'Director of Outreach',
+    class: 'Full-Stack Developer',
+    intro:
+      'Born of the Code-Forged and raised beneath flickering monitors, the Tarnished known as Shikkari ' +
+      'walks the seam where the drawn line meets the running system. Designer by eye and engineer by hand — ' +
+      'a maker who would sooner ship a small thing that serves real people than a grand one that serves none. ' +
+      'What began as apprenticeship to the Loop grew into stewardship of an order, and the same hands that ' +
+      'inscribe interfaces now raise banners and gather crowds. What follows is the reckoning of that road: ' +
+      'the attributes honed, the arts learned, and the deeds set down in ledger.',
+    skills: [
+      { school: 'Frontcraft',   note: 'Spells cast upon the running interface.',
+        arts: ['React', 'Next.js', 'TypeScript', 'Tailwind', 'Framer Motion'] },
+      { school: 'Design Arts',  note: 'The drawn line and the felt moment.',
+        arts: ['UI / UX', 'Brand & Identity', 'Motion', 'Figma'] },
+      { school: 'Systemcraft',  note: 'Foundations laid beneath the surface.',
+        arts: ['PWA', 'Realtime', 'CMS & APIs', 'Web Audio'] },
+    ],
     stats: [
       { key: 'VIGOR',        val: 24, note: 'Endurance through trials' },
       { key: 'MIND',         val: 31, note: 'Recall of the codices' },

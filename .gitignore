@@ -46,3 +46,4 @@ skills-lock.json
 contact-depth-mockups/
 contact-lock-mockups/
 *.png
+!src/app/icon.png

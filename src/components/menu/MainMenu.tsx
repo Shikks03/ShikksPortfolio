@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { getAudio } from '@/lib/audio';
 import { PORTFOLIO_DATA } from '@/data/portfolio';
@@ -27,7 +27,33 @@ function reveal(delay: number, toOpacity = 1) {
 
 export default function MainMenu({ onNavigate, menuItems }: MainMenuProps) {
   const [hovered, setHovered] = useState<string | null>(null);
+  const [focusedIdx, setFocusedIdx] = useState<number | null>(null);
   const data = PORTFOLIO_DATA;
+
+  useEffect(() => {
+    function onKey(e: KeyboardEvent) {
+      if (e.key === 'ArrowDown') {
+        e.preventDefault();
+        setFocusedIdx(prev => {
+          const next = prev === null ? 0 : (prev + 1) % menuItems.length;
+          getAudio().hover();
+          return next;
+        });
+      } else if (e.key === 'ArrowUp') {
+        e.preventDefault();
+        setFocusedIdx(prev => {
+          const next = prev === null ? menuItems.length - 1 : (prev - 1 + menuItems.length) % menuItems.length;
+          getAudio().hover();
+          return next;
+        });
+      } else if (e.key === 'Enter' && focusedIdx !== null) {
+        getAudio().select();
+        onNavigate(menuItems[focusedIdx].id);
+      }
+    }
+    window.addEventListener('keydown', onKey);
+    return () => window.removeEventListener('keydown', onKey);
+  }, [focusedIdx, menuItems, onNavigate]);
 
   return (
     <div style={{ position: 'absolute', inset: 0, overflow: 'hidden' }}>
@@ -116,9 +142,9 @@ export default function MainMenu({ onNavigate, menuItems }: MainMenuProps) {
         </div>
         {menuItems.map((it, i) => (
           <a key={it.id}
-             className={`menu-item ${hovered === it.id ? 'active' : ''}`}
-             onMouseEnter={() => { setHovered(it.id); getAudio().hover(); }}
-             onMouseLeave={() => setHovered(null)}
+             className={`menu-item ${hovered === it.id || focusedIdx === i ? 'active' : ''}`}
+             onMouseEnter={() => { setHovered(it.id); setFocusedIdx(i); getAudio().hover(); }}
+             onMouseLeave={() => { setHovered(null); }}
              onClick={(e) => { e.preventDefault(); getAudio().select(); onNavigate(it.id); }}
              href="#">
             {it.label}
