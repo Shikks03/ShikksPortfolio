@@ -111,28 +111,48 @@ export function Rune({ size = 120, ...rest }: CarvedProps) {
 }
 
 /* =================================================================
-   THE SEVEN SIGILS
+   THE PROJECT SIGILS
    Each is keyed loosely to its project's epithet. Strokes are a little
    irregular and asymmetric on purpose — chiselled by hand, not plotted.
    ================================================================= */
 
-/* Blink Beat — "Glaive of the Pulse": a flame-bladed glaive + spark. */
-const drawBlink: RuneDraw = () => (
+/* Emphatora — "Banner of Distant Courts": a herald's standard bearing a globe. */
+const drawEmphatora: RuneDraw = () => (
   <>
-    {/* spark crowning the blade */}
-    <path d="M60,30 L60,23" />
-    <path d="M54,29 L50.5,24" />
-    <path d="M66,29 L69.5,24" />
-    {/* flame blade */}
-    <path d="M60,31 C53,45 51.5,55 60,66 C68.5,55 67,45 60,31 Z" />
-    <path d="M60,39 L60,61" />
-    {/* side licks */}
-    <path d="M52,50 C49,56 51,62 55,65" />
-    <path d="M68,50 C71,56 69,62 65,65" />
-    {/* haft + curved guard + pommel */}
-    <path d="M60,66 L60,92" />
-    <path d="M50,74 C56,79 65,79 71,73" />
-    <path d="M56.5,92 L63.5,92" />
+    {/* herald's staff + finial */}
+    <path d="M46,22 L46,98" />
+    <path d="M46,22 L46,16" />
+    <path d="M42,18 L50,18" />
+    {/* billowing banner with a swallowtail cut */}
+    <path d="M46,28 L88,33 L75,45 L88,57 L46,52 Z" />
+    {/* a small globe emblem — the far reaches */}
+    <path d="M67,42 m-6,0 a6,6 0 1 0 12,0 a6,6 0 1 0 -12,0" />
+    <path d="M61,42 L73,42" />
+    <path d="M64,37 Q67.5,42 64,47" />
+    <path d="M70,37 Q66.5,42 70,47" />
+    {/* base */}
+    <path d="M39,98 L53,98" />
+  </>
+);
+
+/* Salu — "Steward of the Revels": a feast-goblet flanked by two coins. */
+const drawSalu: RuneDraw = () => (
+  <>
+    {/* the steward's mark — a crowning spark above the cup */}
+    <path d="M60,31 L60,24" />
+    <path d="M55.5,27.5 L64.5,27.5" />
+    {/* goblet bowl (the feast it stewards) */}
+    <path d="M45,35 L75,35 C73,49 66,56 60,57 C54,56 47,49 45,35 Z" />
+    <path d="M49,40 Q60,45 71,40" />
+    {/* stem + spread foot */}
+    <path d="M60,57 L60,76" />
+    <path d="M49,82 Q60,75 71,82" />
+    <path d="M47,86 L73,86" />
+    {/* two coins — the ledger of payments */}
+    <path d="M34,66 m-5,0 a5,5 0 1 0 10,0 a5,5 0 1 0 -10,0" />
+    <path d="M34,62.5 L34,69.5" />
+    <path d="M86,66 m-5,0 a5,5 0 1 0 10,0 a5,5 0 1 0 -10,0" />
+    <path d="M86,62.5 L86,69.5" />
   </>
 );
 
@@ -236,6 +256,18 @@ const drawAzerotech: RuneDraw = () => (
   </>
 );
 
+/* ShikksTracker — "Sieve of the Winnowing": a three-tier funnel + settling drop. */
+const drawShikkstracker: RuneDraw = () => (
+  <>
+    {/* three descending tiers of the funnel */}
+    <path d="M30,30 L90,30 L78,48 L42,48 Z" />
+    <path d="M44,54 L76,54 L67,70 L53,70 Z" />
+    <path d="M54,75 L66,75 L62,88 L58,88 Z" />
+    {/* the settling drop */}
+    <path d="M60,95 m-3.4,0 a3.4,3.4 0 1 0 6.8,0 a3.4,3.4 0 1 0 -6.8,0" />
+  </>
+);
+
 /* Fallback — a simple incised mark. */
 const drawGeneric: RuneDraw = () => (
   <>
@@ -284,7 +316,9 @@ const drawEmail: RuneDraw = () => (
 );
 
 const RUNE_DRAWS: Record<string, RuneDraw> = {
-  blinkbeat: drawBlink,
+  emphatora: drawEmphatora,
+  salu: drawSalu,
+  shikkstracker: drawShikkstracker,
   csnight: drawCsnight,
   meowchi: drawMeowchi,
   ihalalan: drawIhalalan,

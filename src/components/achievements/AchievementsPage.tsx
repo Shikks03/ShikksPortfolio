@@ -10,6 +10,133 @@ const EASE = [0.2, 0.7, 0.2, 1] as const;
 
 interface Stat { key: string; val: number; note: string }
 interface TimelineItem { year: string; title: string; org: string; body: string }
+interface SkillSchool { school: string; note: string; arts: string[] }
+
+/** Full-width character-introduction band — the class-select flavor text. */
+function IntroBand({ text }: { text: string }) {
+  const first = text.charAt(0);
+  const rest = text.slice(1);
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 12 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.9, ease: EASE }}
+      style={{
+        position: 'relative',
+        border: '1px solid rgba(212,168,81,.2)',
+        background:
+          'radial-gradient(ellipse at 10% -10%, rgba(122,46,31,.16) 0%, transparent 55%),' +
+          'linear-gradient(180deg, rgba(20,17,13,.55) 0%, rgba(7,6,10,.32) 100%)',
+        boxShadow: 'inset 0 0 50px rgba(0,0,0,.5)',
+        padding: '22px 32px 26px',
+        overflow: 'hidden',
+      }}>
+      {/* corner ticks, echoing the portrait frame */}
+      {([[10, 10, 1, 1], [10, 10, -1, 1], [10, 10, 1, -1], [10, 10, -1, -1]] as const).map(([x, y, sx, sy], i) => (
+        <svg key={i} viewBox="0 0 20 20" width="12" height="12"
+          style={{
+            position: 'absolute',
+            [sx > 0 ? 'left' : 'right']: x,
+            [sy > 0 ? 'top' : 'bottom']: y,
+            transform: `scale(${sx},${sy})`,
+            color: 'var(--gold)', opacity: .5,
+          }}>
+          <path d="M 0,0 L 16,0 M 0,0 L 0,16" stroke="currentColor" strokeWidth="1.2" fill="none" />
+        </svg>
+      ))}
+
+      <div className="eyebrow" style={{
+        color: 'var(--gold-deep)',
+        display: 'flex', alignItems: 'center', gap: 10,
+      }}>
+        <svg viewBox="0 0 24 24" width="15" height="15" style={{ filter: 'drop-shadow(0 0 5px rgba(241,210,122,.5))' }}>
+          <g stroke="var(--gold)" strokeWidth="1.1" fill="none">
+            <path d="M 12,2 L 22,12 L 12,22 L 2,12 Z" />
+            <circle cx="12" cy="12" r="3.4" fill="var(--gold-bright)" stroke="none" />
+          </g>
+        </svg>
+        The Wanderer — an introduction
+      </div>
+
+      <p style={{
+        fontFamily: 'var(--serif)', fontStyle: 'italic',
+        fontSize: 15.5, color: 'var(--parchment)',
+        lineHeight: 1.72, marginTop: 14, maxWidth: 940,
+        textWrap: 'pretty',
+      }}>
+        <span style={{
+          float: 'left',
+          fontFamily: 'var(--display)', fontStyle: 'normal',
+          fontSize: 52, lineHeight: .82,
+          color: 'var(--gold-bright)',
+          padding: '2px 12px 0 0',
+          textShadow: '0 0 18px rgba(241,210,122,.4)',
+        }}>{first}</span>
+        {rest}
+      </p>
+    </motion.div>
+  );
+}
+
+/** A single skill rendered as an inscribed rune-chip. */
+function RuneChip({ label, delay }: { label: string; delay: number }) {
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 8 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.5, delay, ease: EASE }}
+      whileHover={{
+        borderColor: 'rgba(241,210,122,.7)',
+        boxShadow: '0 0 18px rgba(241,210,122,.28)',
+        backgroundColor: 'rgba(212,168,81,.09)',
+      }}
+      style={{
+        display: 'inline-flex', alignItems: 'center', gap: 9,
+        padding: '7px 14px',
+        border: '1px solid rgba(212,168,81,.28)',
+        background: 'rgba(212,168,81,.04)',
+        cursor: 'default',
+      }}>
+      <svg viewBox="0 0 16 16" width="12" height="12" style={{ flexShrink: 0 }}>
+        <path d="M 8,1 L 14.9,5 L 14.9,11 L 8,15 L 1.1,11 L 1.1,5 Z"
+          fill="none" stroke="var(--gold)" strokeWidth="1" opacity=".8" />
+        <circle cx="8" cy="8" r="2" fill="var(--gold-bright)" />
+      </svg>
+      <span style={{
+        fontFamily: 'var(--display)', fontSize: 13,
+        letterSpacing: '.05em', color: 'var(--parchment)',
+        whiteSpace: 'nowrap',
+      }}>{label}</span>
+    </motion.div>
+  );
+}
+
+/** One school of arts — a titled cluster of rune-chips. */
+function SkillSchoolBlock({ s, gi }: { s: SkillSchool; gi: number }) {
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 10 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.7, delay: 0.15 + gi * 0.12, ease: EASE }}>
+      <div style={{
+        fontFamily: 'var(--display)', fontSize: 12,
+        letterSpacing: '.22em', textTransform: 'uppercase',
+        color: 'var(--gold-bright)',
+        textShadow: '0 0 12px rgba(241,210,122,.25)',
+      }}>‹ {s.school} ›</div>
+      <div style={{
+        fontFamily: 'var(--serif)', fontStyle: 'italic',
+        fontSize: 12.5, color: 'var(--parchment-dim)',
+        marginTop: 3,
+      }}>{s.note}</div>
+      <div style={{ display: 'flex', flexWrap: 'wrap', gap: 10, marginTop: 14 }}>
+        {s.arts.map((a, i) => (
+          <RuneChip key={a} label={a} delay={0.28 + gi * 0.12 + i * 0.06} />
+        ))}
+      </div>
+    </motion.div>
+  );
+}
 
 function Statline({ s, idx }: { s: Stat; idx: number }) {
   return (
@@ -298,12 +425,19 @@ export default function AchievementsPage({ onBack }: { onBack: () => void }) {
 
       <div className="scroll" style={{
         position: 'absolute',
-        inset: '150px 56px 60px 56px',
-        display: 'grid',
-        gridTemplateColumns: '240px 1fr 1.1fr',
-        gap: 36,
+        inset: '150px 56px 56px 56px',
+        display: 'flex',
+        flexDirection: 'column',
+        gap: 32,
         overflowY: 'auto',
       }}>
+        <IntroBand text={a.intro} />
+
+        <div style={{
+          display: 'grid',
+          gridTemplateColumns: '240px 1fr 1.1fr',
+          gap: 36,
+        }}>
         <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 20 }}>
           <Portrait />
           <div style={{ textAlign: 'center' }}>
@@ -353,6 +487,30 @@ export default function AchievementsPage({ onBack }: { onBack: () => void }) {
           <div>
             {a.timeline.map((e, i) => (
               <TimelineEntry key={i} e={e} idx={i} last={i === a.timeline.length - 1} />
+            ))}
+          </div>
+        </div>
+        </div>
+
+        <div style={{ height: 1, background: 'linear-gradient(90deg, transparent, rgba(212,168,81,.3) 20%, rgba(212,168,81,.3) 80%, transparent)' }} />
+
+        <div>
+          <div className="eyebrow" style={{ color: 'var(--gold-deep)', marginBottom: 4 }}>
+            ‹ Armaments & Arts ›
+          </div>
+          <div style={{
+            fontFamily: 'var(--serif)', fontStyle: 'italic',
+            fontSize: 14, color: 'var(--parchment-dim)', marginBottom: 22,
+          }}>
+            The schools of craft this hand has learned.
+          </div>
+          <div style={{
+            display: 'grid',
+            gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))',
+            gap: 34,
+          }}>
+            {a.skills.map((s, gi) => (
+              <SkillSchoolBlock key={s.school} s={s} gi={gi} />
             ))}
           </div>
         </div>
