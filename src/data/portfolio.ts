@@ -42,7 +42,7 @@ export interface PortfolioData {
 export const PORTFOLIO_DATA: PortfolioData = {
   hero: {
     name: 'SHIKKARI',
-    epithet: 'Of the Code-Forged',
+    epithet: 'Full-Stack Web Developer',
     subtitle: 'Designer · Engineer · Apprentice of the Loop',
   },
 
