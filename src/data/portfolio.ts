@@ -139,6 +139,7 @@ export const PORTFOLIO_DATA: PortfolioData = {
       tags: ['Monitoring', 'Dashboard', 'Realtime'],
       desc: 'An overseer\'s dashboard. Quiet when calm, loud when the floor is shifting.',
       github: 'https://github.com/Shikks03',
+      url: 'https://overseethesis.vercel.app',
       xp: 50, yp: 78,
     },
     {
