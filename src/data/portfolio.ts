@@ -60,7 +60,7 @@ export const PORTFOLIO_DATA: PortfolioData = {
       tags: ['Next.js', 'Vercel', 'Community', 'Advocacy'],
       desc: 'A community-driven platform empowering youth leaders, social workers, and development practitioners — with guides and resources on leadership, child protection, mental well-being, and environmental stewardship.',
       github: 'https://github.com/Shikks03',
-      url: 'https://emphatora-international.vercel.app',
+      url: 'https://empathora-international.vercel.app',
       xp: 14, yp: 28,
     },
     {
@@ -76,7 +76,7 @@ export const PORTFOLIO_DATA: PortfolioData = {
       tags: ['Next.js', 'Tailwind', 'CMS'],
       desc: 'Annual student-org night-of-CS site. Schedules, talks, RSVPs — kept alive through three regimes of organizers.',
       github: 'https://github.com/Shikks03',
-      url: 'https://csnight.vercel.app',
+      url: 'https://csnight.fit',
       xp: 38, yp: 18,
     },
     {
