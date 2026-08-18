@@ -163,6 +163,16 @@ export default function MainMenu({ onNavigate, menuItems }: MainMenuProps) {
         }}>
           v. 0.1 — Tarnished Build
         </div>
+        <a
+          href="https://riku.works"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="riku-credit"
+          style={{ marginTop: 6, paddingLeft: 28 }}
+          onMouseEnter={() => getAudio().hover()}
+        >
+          Site by RIKU
+        </a>
       </motion.div>
 
       {/* RIGHT-SIDE CARTOUCHE — a small ornament with crest */}

@@ -192,6 +192,24 @@ body.cursor-rune .cursor { filter: drop-shadow(0 0 4px var(--gold)); }
   padding-left: 24px;
 }
 
+/* Studio credit link — same quiet caption style as the build-version line */
+.riku-credit {
+  display: block;
+  font-family: var(--display);
+  font-size: 10px;
+  letter-spacing: .28em;
+  color: var(--parchment-dim);
+  opacity: .55;
+  text-transform: uppercase;
+  text-decoration: none;
+  cursor: none;
+  transition: opacity calc(.22s / var(--speed)) ease, color calc(.22s / var(--speed)) ease;
+}
+.riku-credit:hover, .riku-credit:focus-visible {
+  opacity: 1;
+  color: var(--gold-bright);
+}
+
 /* =================================================================
    BUTTONS / ER PROMPT
    ================================================================= */
