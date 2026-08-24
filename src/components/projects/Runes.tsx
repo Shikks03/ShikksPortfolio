@@ -189,34 +189,39 @@ const drawMeowchi: RuneDraw = () => (
   </>
 );
 
-/* iHalalan — "Compass of the Faithful": organic 4-point star + pivot. */
+/* iHalalan — "Warden of the Single Voice": a marked ballot dropping into
+   the mouth of the box, under a four-point civic star. The star is kept
+   from the older cutting; the crescent that sat at its crown is not, as
+   this is an election system and never had anything to do with faith. */
 const drawIhalalan: RuneDraw = () => (
   <>
-    {/* four-point star, north/south long, east/west short, faintly off */}
-    <path d="M60,23 L64,54 L92,60 L64.5,66 L60,98 L56,66 L28,60 L55.5,54 Z" />
-    {/* pivot ring + cross */}
-    <path d="M60,60 m-5,0 a5,5 0 1 0 10,0 a5,5 0 1 0 -10,0" />
-    <path d="M60,55 L60,65 M55,60 L65,60" />
-    {/* tiny crescent of faith at the crown */}
-    <path d="M60,20 a4.5,4.5 0 1 0 2.6,8 a3.4,3.4 0 1 1 -2.6,-8 Z" />
+    {/* the civic star, crowning */}
+    <path d="M60,9 L62.5,23 L75,27 L62.5,31 L60,45 L57.5,31 L45,27 L57.5,23 Z" />
+    {/* the folded ballot, canted as it falls */}
+    <path d="M48,54 L70,50 L74,74 L52,78 Z" />
+    {/* the mark struck upon it */}
+    <path d="M57,63 L61,68 L68,58" />
+    {/* the mouth of the box, then the box */}
+    <path d="M33,82 L87,82" />
+    <path d="M38,82 L40,105 L80,105 L82,82" />
   </>
 );
 
-/* QuizGive — "Token of the Open Hand": upturned palm offering a coin. */
+/* QuizGive — "Whetstone of Recall": two leaves of a fanned stack, the
+   upper one ruled with a question and struck with the mark of a right
+   answer. The offered coin and open palm are gone; nothing here is
+   given away, the app has no donation of any kind. */
 const drawQuizgive: RuneDraw = () => (
   <>
-    {/* the offered coin, above the open palm */}
-    <path d="M60,27 m-6.5,0 a6.5,6.5 0 1 0 13,0 a6.5,6.5 0 1 0 -13,0" />
-    <path d="M60,23.8 L60,30.2" />
-    {/* cupped palm + rounded wrist (no boxy band) */}
-    <path d="M42,71 C42,62 49,57 60,57 C71,57 78,62 78,71" />
-    <path d="M53,70 C52,80 54,88 60,89 C66,88 68,80 67,70" />
-    {/* five fanned fingers, uneven lengths */}
-    <path d="M44,65 C39,61 36.5,56 37,50.5" />
-    <path d="M51,59 C49.5,51 49,44 50,39" />
-    <path d="M59,57.5 C58,48 58,41 58.5,36" />
-    <path d="M66,58 C67.5,50 68.5,44 68,39" />
-    <path d="M73,61 C76,56 78,51 77.5,46.5" />
+    {/* the leaf beneath, offset as in a fanned stack */}
+    <path d="M32,52 L62,43 L73,79 L43,88 Z" />
+    {/* the leaf on top, bearing the asking */}
+    <path d="M44,42 L79,32 L91,71 L56,81 Z" />
+    {/* two ruled lines of the question */}
+    <path d="M55,49 L76,43" />
+    <path d="M58,58 L79,52" />
+    {/* the mark of a right answer */}
+    <path d="M62,66 L68,72 L80,58" />
   </>
 );
 
@@ -239,20 +244,22 @@ const drawOversee: RuneDraw = () => (
   </>
 );
 
-/* Azerotech — "Sigil of Commerce": an iron key bound by a serpent coil. */
+/* Azerotech — "Sigil of Commerce": an A and a Z struck as one monogram and
+   routed like a circuit trace. The A's crossbar does double duty as the head
+   of the Z nested in its counter, and every terminal ends in a solder pad. */
 const drawAzerotech: RuneDraw = () => (
   <>
-    {/* bow (oval loop) + eye */}
-    <path d="M60,36 m-12,0 a12,12 0 1 0 24,0 a12,12 0 1 0 -24,0" />
-    <path d="M60,36 m-5,0 a5,5 0 1 0 10,0 a5,5 0 1 0 -10,0" />
-    {/* shaft + tip */}
-    <path d="M60,48 L60,87" />
-    <path d="M56.5,87 L63.5,87" />
-    {/* stepped bit teeth */}
-    <path d="M60,74 L70,74 L70,80" />
-    <path d="M60,82 L66,82 L66,86.5" />
-    {/* serpentine coil crossing the shaft */}
-    <path d="M51,53 C70,59 50,69 68,75.5" />
+    {/* the A — apex and two splayed legs */}
+    <path d="M37,86 L60,29 L83,86" />
+    {/* the crossbar, which is also the head of the Z */}
+    <path d="M47,61 L73,61" />
+    {/* the Z — diagonal down-left, then its foot */}
+    <path d="M73,61 L49,80" />
+    <path d="M49,80 L73,80" />
+    {/* solder pads where the trace terminates */}
+    <circle cx="60" cy="25" r="3.4" />
+    <circle cx="35.5" cy="90" r="3.4" />
+    <circle cx="84.5" cy="90" r="3.4" />
   </>
 );
 
@@ -265,6 +272,24 @@ const drawShikkstracker: RuneDraw = () => (
     <path d="M54,75 L66,75 L62,88 L58,88 Z" />
     {/* the settling drop */}
     <path d="M60,95 m-3.4,0 a3.4,3.4 0 1 0 6.8,0 a3.4,3.4 0 1 0 -6.8,0" />
+  </>
+);
+
+/* RIKU — "Forge of the Small Folk": the studio's own mark, <R>, chiselled.
+   The R keeps the logo's tell — no left stem at all: the bar simply begins,
+   bows right, and returns to a point that the leg then kicks out of. The
+   flanking chevrons are uneven on purpose, as they are in the mark itself:
+   the left one taller and centred, the right one smaller and set lower. */
+const drawRiku: RuneDraw = () => (
+  <>
+    {/* left chevron — the taller of the two, set a touch above centre */}
+    <path d="M42,35 L23,60 L42,84" />
+    {/* the R: no left stem — the bar simply begins, bows right, and returns to a point */}
+    <path d="M46,36 L67,36 C78,36 81,52 70,59 L56,66" />
+    {/* the leg, kicked out of that same point */}
+    <path d="M56,66 L76,87" />
+    {/* right chevron — smaller, and set lower */}
+    <path d="M84,52 L98,70 L84,87" />
   </>
 );
 
@@ -316,6 +341,7 @@ const drawEmail: RuneDraw = () => (
 );
 
 const RUNE_DRAWS: Record<string, RuneDraw> = {
+  riku: drawRiku,
   emphatora: drawEmphatora,
   salu: drawSalu,
   shikkstracker: drawShikkstracker,
