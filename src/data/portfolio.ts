@@ -48,6 +48,22 @@ export const PORTFOLIO_DATA: PortfolioData = {
 
   projects: [
     {
+      id: 'riku',
+      name: 'RIKU',
+      epithet: 'Forge of the Small Folk',
+      type: "Founder's Forge",
+      rarity: 'Legendary',
+      hue: 168,
+      tint: '#2f6f62',
+      shape: 'kite',
+      stats: { ATK: 52, FAITH: 60, ARC: 57, SPD: 45 },
+      tags: ['Next.js 16', 'React 19', 'TypeScript', 'GSAP · Lenis', 'Static · Vercel'],
+      desc: 'My own studio, a freelance practice building websites and back-office systems for Philippine small businesses whose operations still live in a notebook. Eight service tiers with published starting prices, six client builds written up as case studies. The site itself is the argument: the hero\'s cursor trail runs a Jos Stam stable fluids simulation in GLSL. Nothing is computed at request time.',
+      github: 'https://github.com/Shikks03',
+      url: 'https://riku.works',
+      xp: 71, yp: 5,
+    },
+    {
       id: 'emphatora',
       name: 'Emphatora',
       epithet: 'Standard of the Common Weal',
@@ -136,8 +152,8 @@ export const PORTFOLIO_DATA: PortfolioData = {
       tint: '#5a3a52',
       shape: 'obelisk',
       stats: { ATK: 44, FAITH: 23, ARC: 58, SPD: 39 },
-      tags: ['Monitoring', 'Dashboard', 'Realtime'],
-      desc: 'An overseer\'s dashboard. Quiet when calm, loud when the floor is shifting.',
+      tags: ['React 18', 'Vite 6', 'TypeScript', 'GSAP · Lenis', 'Thesis · FEU Tech'],
+      desc: 'The public face of a thesis project at FEU Tech: an Android app that catches inappropriate language on a child\'s phone, Filipino and English alike, including the deliberately misspelled kind, by scoring it with Levenshtein distance. A stripped-down version of that scorer runs live in the page. On desktop, one phone mockup travels and morphs across four sections on scroll-driven GSAP timelines.',
       github: 'https://github.com/Shikks03',
       url: 'https://overseethesis.vercel.app',
       xp: 50, yp: 78,
@@ -169,7 +185,7 @@ export const PORTFOLIO_DATA: PortfolioData = {
       shape: 'obelisk',
       stats: { ATK: 44, FAITH: 55, ARC: 61, SPD: 34 },
       tags: ['Next.js 16', 'React 19', 'TypeScript', 'Prisma · Neon', 'Auth.js · RBAC', 'shadcn/ui'],
-      desc: 'Admin-only back-office for a party-rentals & event-planning house — clients, bookings, quotes, versioned PDF contracts, and payments with receipt-image OCR by Claude vision. A pitchable demo, hardened end-to-end, now sold as a per-client template.',
+      desc: 'Staff-only back-office for a hybrid party rentals and event planning business, with four staff roles and a quote to payment spine. Its one real trick is the money: receipts from GCash, Maya, a bank transfer, or a paper OR get photographed, read by Claude vision, and posted to the ledger with a confidence score.',
       github: 'https://github.com/Shikks03',
       xp: 68, yp: 50,
     },
@@ -191,6 +207,8 @@ export const PORTFOLIO_DATA: PortfolioData = {
   ],
 
   constellationEdges: [
+    ['riku', 'ihalalan'],
+    ['riku', 'meowchi'],
     ['emphatora', 'csnight'],
     ['csnight', 'meowchi'],
     ['meowchi', 'ihalalan'],
