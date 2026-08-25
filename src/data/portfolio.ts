@@ -273,8 +273,8 @@ export const PORTFOLIO_DATA: PortfolioData = {
         arts: ['React', 'Next.js', 'TypeScript', 'Tailwind', 'Framer Motion'] },
       { school: 'Design Arts',  note: 'Design and brand, from wireframe to finished feel.',
         arts: ['UI / UX', 'Brand & Identity', 'Motion', 'Figma'] },
-      { school: 'Systemcraft',  note: 'Under the hood: data, delivery, and realtime.',
-        arts: ['PWA', 'Realtime', 'CMS & APIs', 'Web Audio'] },
+      { school: 'Systemcraft',  note: 'Under the hood: data, delivery, realtime, and the desktop.',
+        arts: ['PWA', 'Realtime', 'CMS & APIs', 'Web Audio', 'Electron', 'SQLite'] },
     ],
     stats: [
       { key: 'VIGOR',        val: 24, note: 'Endurance through trials' },
