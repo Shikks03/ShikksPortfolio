@@ -29,7 +29,7 @@ export interface PortfolioData {
     runes: number;
     class: string;
     intro: string;
-    skills: Array<{ school: string; note: string; arts: string[] }>;
+    skills: Array<{ school: string; gloss: string; note: string; arts: string[] }>;
     stats: Array<{ key: string; val: number; note: string }>;
     timeline: Array<{ year: string; title: string; org: string; body: string }>;
   };
@@ -269,11 +269,14 @@ export const PORTFOLIO_DATA: PortfolioData = {
       'an order: first publicity, then outreach and marketing, then the whole chapter. This page is the ' +
       'record of it.',
     skills: [
-      { school: 'Frontcraft',   note: 'Front-end work, the part people see and touch.',
+      { school: 'Frontcraft',   gloss: 'Front-End',
+        note: 'Front-end work, the part people see and touch.',
         arts: ['React', 'Next.js', 'TypeScript', 'Tailwind', 'Framer Motion'] },
-      { school: 'Design Arts',  note: 'Design and brand, from wireframe to finished feel.',
+      { school: 'Design Arts',  gloss: 'Design',
+        note: 'Design and brand, from wireframe to finished feel.',
         arts: ['UI / UX', 'Brand & Identity', 'Motion', 'Figma'] },
-      { school: 'Systemcraft',  note: 'Under the hood: data, delivery, realtime, and the desktop.',
+      { school: 'Systemcraft',  gloss: 'Systems',
+        note: 'Under the hood: data, delivery, realtime, and the desktop.',
         arts: ['PWA', 'Realtime', 'CMS & APIs', 'Web Audio', 'Electron', 'SQLite'] },
     ],
     stats: [

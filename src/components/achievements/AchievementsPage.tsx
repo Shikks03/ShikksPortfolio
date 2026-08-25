@@ -11,7 +11,7 @@ const EASE = [0.2, 0.7, 0.2, 1] as const;
 
 interface Stat { key: string; val: number; note: string }
 interface TimelineItem { year: string; title: string; org: string; body: string }
-interface SkillSchool { school: string; note: string; arts: string[] }
+interface SkillSchool { school: string; gloss: string; note: string; arts: string[] }
 
 /** Full-width character-introduction band — the class-select flavor text. */
 function IntroBand({ text }: { text: string }) {
@@ -124,7 +124,15 @@ function SkillSchoolBlock({ s, gi }: { s: SkillSchool; gi: number }) {
         letterSpacing: '.22em', textTransform: 'uppercase',
         color: 'var(--gold-bright)',
         textShadow: '0 0 12px rgba(241,210,122,.25)',
-      }}>‹ {s.school} ›</div>
+      }}>
+        ‹ {s.school} ›
+        {/* plain-language gloss, so the school name never needs decoding */}
+        <span style={{
+          fontSize: 9.5, letterSpacing: '.16em',
+          color: 'var(--parchment-dim)', textShadow: 'none',
+          marginLeft: 8, whiteSpace: 'nowrap',
+        }}>· {s.gloss}</span>
+      </div>
       <div style={{
         fontFamily: 'var(--serif)', fontStyle: 'italic',
         fontSize: 12.5, color: 'var(--parchment-dim)',
