@@ -293,6 +293,48 @@ const drawRiku: RuneDraw = () => (
   </>
 );
 
+const drawTokentracker: RuneDraw = () => (
+  <>
+    {/* the glass: two vessels pinched at a waist */}
+    <path d="M38,28 L82,28 L63,59 L57,59 Z" />
+    <path d="M57,61 L63,61 L82,92 L38,92 Z" />
+    {/* the bars that cap it */}
+    <path d="M32,26 L88,26" />
+    <path d="M32,94 L88,94" />
+    {/* a grain still falling, and the mound it has made */}
+    <path d="M60,63 L60,76" />
+    <path d="M47,92 Q60,79 73,92" />
+    {/* the loop that turns the glass over again */}
+    <path d="M24,74 A40,40 0 0 1 24,46" />
+    <path d="M24,46 L19.5,52.5" />
+    <path d="M24,46 L29.5,50" />
+    <path d="M96,46 A40,40 0 0 1 96,74" />
+    <path d="M96,74 L90.5,70" />
+    <path d="M96,74 L100.5,67.5" />
+  </>
+);
+
+const drawWheel: RuneDraw = () => (
+  <>
+    {/* rim and inner ring — the band between them is where the fates sit */}
+    <path d="M60,60 m-34,0 a34,34 0 1 0 68,0 a34,34 0 1 0 -68,0" />
+    <path d="M60,60 m-25,0 a25,25 0 1 0 50,0 a25,25 0 1 0 -50,0" />
+    {/* eight cuts dividing the band */}
+    <path d="M60,35 L60,26" />
+    <path d="M60,85 L60,94" />
+    <path d="M35,60 L26,60" />
+    <path d="M85,60 L94,60" />
+    <path d="M42.3,42.3 L36,36" />
+    <path d="M77.7,77.7 L84,84" />
+    <path d="M42.3,77.7 L36,84" />
+    <path d="M77.7,42.3 L84,36" />
+    {/* the hub */}
+    <path d="M60,60 m-6,0 a6,6 0 1 0 12,0 a6,6 0 1 0 -12,0" />
+    {/* the pointer a fate falls under */}
+    <path d="M60,13 L52.5,23 L67.5,23 Z" />
+  </>
+);
+
 /* Fallback — a simple incised mark. */
 const drawGeneric: RuneDraw = () => (
   <>
@@ -351,6 +393,8 @@ const RUNE_DRAWS: Record<string, RuneDraw> = {
   quizgive: drawQuizgive,
   oversee: drawOversee,
   azerotech: drawAzerotech,
+  tokentracker: drawTokentracker,
+  wheel: drawWheel,
   github: drawGithub,
   linkedin: drawLinkedin,
   email: drawEmail,

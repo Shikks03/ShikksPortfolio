@@ -61,7 +61,7 @@ export const PORTFOLIO_DATA: PortfolioData = {
       desc: 'My own studio, a freelance practice building websites and back-office systems for Philippine small businesses whose operations still live in a notebook. Eight service tiers with published starting prices, six client builds written up as case studies. The site itself is the argument: the hero\'s cursor trail runs a Jos Stam stable fluids simulation in GLSL. Nothing is computed at request time.',
       github: 'https://github.com/Shikks03',
       url: 'https://riku.works',
-      xp: 71, yp: 5,
+      xp: 66, yp: 5,
     },
     {
       id: 'empathora',
@@ -77,7 +77,7 @@ export const PORTFOLIO_DATA: PortfolioData = {
       desc: 'A four page site for a Philippine training and development organization and its six programs, one each for children, older adults, women, men, climate resilience, and community fellowship. It carries no API routes, no server actions, and no database; every page is prerendered at build time. The inner pages check for reduced motion before animating anything.',
       github: 'https://github.com/Shikks03',
       url: 'https://empathora-international.vercel.app',
-      xp: 14, yp: 28,
+      xp: 11, yp: 17,
     },
     {
       id: 'csnight',
@@ -93,7 +93,7 @@ export const PORTFOLIO_DATA: PortfolioData = {
       desc: 'The night FEU Tech\'s CS community traded terminals for a masquerade ball, and the site that ran it. The programme opens act by act, and behind two locked doors sits a 256 seat map that officers filled by hand, one name at a time. I hosted and led the event, and it took Best Non-Academic Activity for the year.',
       github: 'https://github.com/Shikks03',
       url: 'https://csnight.fit',
-      xp: 38, yp: 18,
+      xp: 34, yp: 9,
     },
     {
       id: 'meowchi',
@@ -109,7 +109,7 @@ export const PORTFOLIO_DATA: PortfolioData = {
       desc: 'A one page shop window for a mochi maker working across Cavite and Manila: three cats, three flavors, hand folded in small batches. There is no framework here and no build step. Just over three hundred lines of vanilla JavaScript do all of it. On desktop the hero mochi squishes as you scroll, and orders leave through a Google form.',
       github: 'https://github.com/Shikks03',
       url: 'https://meowchi.vercel.app',
-      xp: 56, yp: 28,
+      xp: 50, yp: 28,
     },
     {
       id: 'ihalalan',
@@ -124,7 +124,7 @@ export const PORTFOLIO_DATA: PortfolioData = {
       tags: ['Next.js 16', 'React 19', 'MongoDB', 'Tailwind 4', 'Civic Tech'],
       desc: 'A voting system for Filipino club and community elections, named for halalan, Tagalog for election. Each voter gets one nine digit token, and a MongoDB transaction spends it in the same breath the ballot lands, so a double vote loses a race rather than slipping through. Results flow to the tally board over a change stream.',
       github: 'https://github.com/Shikks03',
-      xp: 86, yp: 26,
+      xp: 80, yp: 26,
     },
     {
       id: 'quizgive',
@@ -140,7 +140,7 @@ export const PORTFOLIO_DATA: PortfolioData = {
       desc: 'Feed it a quizfetch export, or just paste your notes, and QuizGive turns them into a graded quiz. Five parsers race over the pasted text (term and definition pairs, question and answer blocks, markdown tables, numbered lists, raw JSON) and whichever reads it most confidently wins. Miss a few and you can retake only what you got wrong.',
       url: 'https://quiz-give.vercel.app',
       github: 'https://github.com/Shikks03',
-      xp: 22, yp: 70,
+      xp: 12, yp: 70,
     },
     {
       id: 'oversee',
@@ -156,7 +156,7 @@ export const PORTFOLIO_DATA: PortfolioData = {
       desc: 'The public face of a thesis project at FEU Tech: an Android app that catches inappropriate language on a child\'s phone, Filipino and English alike, including the deliberately misspelled kind, by scoring it with Levenshtein distance. A stripped-down version of that scorer runs live in the page. On desktop, one phone mockup travels and morphs across four sections on scroll-driven GSAP timelines.',
       github: 'https://github.com/Shikks03',
       url: 'https://overseethesis.vercel.app',
-      xp: 50, yp: 78,
+      xp: 50, yp: 88,
     },
     {
       id: 'azerotech',
@@ -172,7 +172,7 @@ export const PORTFOLIO_DATA: PortfolioData = {
       desc: 'Not a brochure. Built for a repair shop in Imus: customers book appointments, track repairs, and reserve accessories out front, while staff work the same records from a protected admin panel behind. The WebGL backdrop waits for requestIdleCallback so it never costs the first paint, then falls back to a 47KB still.',
       github: 'https://github.com/Shikks03',
       url: 'https://azerotech.vercel.app',
-      xp: 78, yp: 76,
+      xp: 78, yp: 81,
     },
     {
       id: 'salu',
@@ -187,7 +187,7 @@ export const PORTFOLIO_DATA: PortfolioData = {
       tags: ['Next.js 16', 'React 19', 'TypeScript', 'Prisma · Neon', 'Auth.js · RBAC', 'shadcn/ui'],
       desc: 'Staff-only back-office for a hybrid party rentals and event planning business, with four staff roles and a quote to payment spine. Its one real trick is the money: receipts from GCash, Maya, a bank transfer, or a paper OR get photographed, read by Claude vision, and posted to the ledger with a confidence score.',
       github: 'https://github.com/Shikks03',
-      xp: 68, yp: 50,
+      xp: 63, yp: 55,
     },
     {
       id: 'shikkstracker',
@@ -203,6 +203,36 @@ export const PORTFOLIO_DATA: PortfolioData = {
       desc: 'The outreach desk behind my freelance practice. It holds the contact list, has Claude draft a three touch sequence for each lead, sends through my own Gmail, and scores opens, clicks, and replies until someone crosses into hot. A reply stops the sequence dead and emails me an alert, because past that point a person should be writing.',
       github: 'https://github.com/Shikks03',
       xp: 26, yp: 44,
+    },
+    {
+      id: 'tokentracker',
+      name: 'TokenTracker',
+      epithet: 'Hourglass of the Loop',
+      type: "Craftsman's Astrolabe",
+      rarity: 'Rare',
+      hue: 96,
+      tint: '#5c6b34',
+      shape: 'hex',
+      stats: { ATK: 39, FAITH: 21, ARC: 62, SPD: 44 },
+      tags: ['Electron', 'React 18 · Vite', 'TypeScript', 'SQLite · better-sqlite3', 'Recharts', 'Desktop App'],
+      desc: 'The only work here that is not a website. A desktop app in the tray, keeping a private ledger of my hours at the loop: tokens, models, projects, and streaks, in local SQLite that never leaves the machine. Claude Code posts each session to a small server on port 27420, which answers 200 even when the payload is malformed, because a tracker should never be why your editor stalls.',
+      github: 'https://github.com/Shikks03',
+      xp: 90, yp: 50,
+    },
+    {
+      id: 'wheel',
+      name: 'The Wheel',
+      epithet: 'Turning of Small Fates',
+      type: 'Fate Engine',
+      rarity: 'Rare',
+      hue: 6,
+      tint: '#7a2f3a',
+      shape: 'oval',
+      stats: { ATK: 41, FAITH: 47, ARC: 66, SPD: 33 },
+      tags: ['React 18', 'Vite · TypeScript', 'Event-Sourced Store', 'JSON Rulesets', 'Vitest · 35 suites', 'In Progress'],
+      desc: 'Dungeons and Dragons character creation, run on one wheel instead of dice. Spin an archetype, five stats, an element, and a weakness into a character, then spin again to duel, train, or retire. Fights settle on a triangle where speed beats strength, strength beats defense, and defense beats speed. The ruleset lives in validated JSON, so the game retunes without a rebuild.',
+      github: 'https://github.com/Shikks03',
+      xp: 42, yp: 58,
     },
   ],
 
@@ -221,6 +251,10 @@ export const PORTFOLIO_DATA: PortfolioData = {
     ['shikkstracker', 'empathora'],
     ['shikkstracker', 'csnight'],
     ['shikkstracker', 'quizgive'],
+    ['tokentracker', 'ihalalan'],
+    ['tokentracker', 'salu'],
+    ['wheel', 'csnight'],
+    ['wheel', 'quizgive'],
   ],
 
   achievements: {
