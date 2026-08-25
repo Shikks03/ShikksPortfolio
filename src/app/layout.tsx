@@ -26,7 +26,7 @@ const marcellusSC = Marcellus_SC({
 });
 
 const SITE_URL = 'https://shikkari.dev';
-const SITE_TITLE = 'Shikkari — Full-Stack Web Developer';
+const SITE_TITLE = 'Shikkari - Full-Stack Web Developer';
 const SITE_DESCRIPTION =
   "Shikkari is a full-stack web developer who builds websites and interfaces with React and Next.js, and runs RIKU, a freelance web development studio.";
 
