@@ -72,7 +72,7 @@ export default function HeroBackground({ paused = false }: HeroBackgroundProps) 
         </svg>
       </div>
 
-      <div style={{
+      <div className="hero-badge" style={{
         position: 'absolute',
         top: 24, left: 24,
         padding: '4px 10px',

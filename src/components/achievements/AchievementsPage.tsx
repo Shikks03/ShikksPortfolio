@@ -3,6 +3,7 @@
 import { useState, useEffect, useRef, useCallback } from 'react';
 import { motion } from 'framer-motion';
 import { PORTFOLIO_DATA } from '@/data/portfolio';
+import { useViewport } from '@/lib/useViewport';
 import EmberField from '@/components/shared/EmberField';
 import BackButton from '@/components/shared/BackButton';
 
@@ -55,7 +56,7 @@ function IntroBand({ text }: { text: string }) {
             <circle cx="12" cy="12" r="3.4" fill="var(--gold-bright)" stroke="none" />
           </g>
         </svg>
-        The Wanderer — an introduction
+        The Wanderer · An Introduction
       </div>
 
       <p style={{
@@ -327,6 +328,7 @@ function Portrait() {
 
 export default function AchievementsPage({ onBack }: { onBack: () => void }) {
   const a = PORTFOLIO_DATA.achievements;
+  const { isMobile, isTablet } = useViewport();
   const [liveRunes, setLiveRunes]     = useState<number | null>(null);
   const [displayRunes, setDisplayRunes] = useState(1);
   const displayRef   = useRef(1);
@@ -401,10 +403,13 @@ export default function AchievementsPage({ onBack }: { onBack: () => void }) {
           'radial-gradient(ellipse at 70% 30%, rgba(212,168,81,.10) 0%, transparent 60%),' +
           'linear-gradient(180deg, #0d0b0a 0%, #050307 100%)',
       }} />
-      <EmberField count={26} intense={0.7} />
+      <EmberField count={isMobile ? 14 : 26} intense={0.7} />
 
       <div style={{
-        position: 'absolute', top: 36, left: 64, right: 64,
+        position: 'absolute',
+        top: isMobile ? 68 : 36,
+        left: isMobile ? 20 : 64,
+        right: isMobile ? 80 : 64,
         display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end',
         zIndex: 20,
       }}>
@@ -412,10 +417,10 @@ export default function AchievementsPage({ onBack }: { onBack: () => void }) {
           <div className="eyebrow" style={{ color: 'var(--gold-deep)' }}>
             ‹ Codex III · The Tarnished&apos;s Page ›
           </div>
-          <h1 className="title-disp" style={{ fontSize: 42, marginTop: 6 }}>{a.title}</h1>
+          <h1 className="title-disp" style={{ fontSize: isMobile ? 28 : 42, marginTop: 6 }}>{a.title}</h1>
           <div style={{
             fontFamily: 'var(--serif)', fontStyle: 'italic',
-            fontSize: 14, color: 'var(--parchment-dim)', marginTop: 4,
+            fontSize: isMobile ? 13 : 14, color: 'var(--parchment-dim)', marginTop: 4,
           }}>
             Status, attributes, and the deeds upon thy name.
           </div>
@@ -425,18 +430,19 @@ export default function AchievementsPage({ onBack }: { onBack: () => void }) {
 
       <div className="scroll" style={{
         position: 'absolute',
-        inset: '150px 56px 56px 56px',
+        inset: isMobile ? '205px 16px 0 16px' : isTablet ? '184px 40px 40px 40px' : '150px 56px 56px 56px',
         display: 'flex',
         flexDirection: 'column',
-        gap: 32,
+        gap: isMobile ? 28 : 32,
         overflowY: 'auto',
+        paddingBottom: isMobile ? 32 : 0,
       }}>
         <IntroBand text={a.intro} />
 
         <div style={{
           display: 'grid',
-          gridTemplateColumns: '240px 1fr 1.1fr',
-          gap: 36,
+          gridTemplateColumns: isMobile ? '1fr' : isTablet ? '240px 1fr' : '240px 1fr 1.1fr',
+          gap: isMobile ? 28 : 36,
         }}>
         <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 20 }}>
           <Portrait />
@@ -480,7 +486,7 @@ export default function AchievementsPage({ onBack }: { onBack: () => void }) {
           </div>
         </div>
 
-        <div>
+        <div style={{ gridColumn: isTablet ? '1 / -1' : 'auto' }}>
           <div className="eyebrow" style={{ color: 'var(--gold-deep)', marginBottom: 16 }}>
             ‹ Deeds & Honors ›
           </div>

@@ -42,15 +42,19 @@ function StatBar({ label, value, max = 99 }: { label: string; value: number; max
 interface StatPanelProps {
   project: Project | undefined;
   visible: boolean;
+  /** 'side' anchors to a screen edge (desktop); 'sheet' rises from the bottom (handheld). */
+  variant?: 'side' | 'sheet';
   /** Which side of the screen to anchor the panel to. Defaults to 'right'. */
   side?: 'left' | 'right';
+  onClose?: () => void;
   onMouseEnter?: () => void;
   onMouseLeave?: () => void;
   onClick?: (e: React.MouseEvent) => void;
 }
 
-export default function StatPanel({ project, visible, side = 'right', onMouseEnter, onMouseLeave, onClick }: StatPanelProps) {
+export default function StatPanel({ project, visible, variant = 'side', side = 'right', onClose, onMouseEnter, onMouseLeave, onClick }: StatPanelProps) {
   if (!project) return null;
+  const isSheet = variant === 'sheet';
   // Slide in from the panel's own edge so the motion always reads as "emerging from the margin".
   const restX = side === 'right' ? 40 : -40;
   return (
@@ -58,7 +62,17 @@ export default function StatPanel({ project, visible, side = 'right', onMouseEnt
       onMouseEnter={onMouseEnter}
       onMouseLeave={onMouseLeave}
       onClick={onClick}
-      style={{
+      style={isSheet ? {
+        position: 'fixed',
+        left: 0, right: 0, bottom: 0,
+        transform: `translateY(${visible ? '0%' : '108%'})`,
+        opacity: visible ? 1 : 0,
+        transition: 'opacity .35s ease, transform .45s cubic-bezier(.2,.7,.2,1)',
+        maxHeight: '74vh',
+        display: 'flex',
+        pointerEvents: visible ? 'auto' : 'none',
+        zIndex: 300,
+      } : {
         position: 'absolute',
         [side]: 56,
         top: '50%',
@@ -69,13 +83,43 @@ export default function StatPanel({ project, visible, side = 'right', onMouseEnt
         pointerEvents: visible ? 'auto' : 'none',
         zIndex: 30,
       }}>
-      <div style={{
+      <div className={isSheet ? 'scroll' : undefined} style={{
         position: 'relative',
-        padding: '28px 26px 22px',
+        padding: isSheet
+          ? '28px 22px calc(22px + env(safe-area-inset-bottom))'
+          : '28px 26px 22px',
         background: 'linear-gradient(180deg, rgba(20,16,14,.94) 0%, rgba(12,10,9,.96) 100%)',
         border: '1px solid rgba(212,168,81,.32)',
         boxShadow: '0 30px 80px rgba(0,0,0,.7), 0 0 40px rgba(212,168,81,.08), inset 0 0 60px rgba(0,0,0,.6)',
+        ...(isSheet ? {
+          width: '100%',
+          overflowY: 'auto' as const,
+          WebkitOverflowScrolling: 'touch' as const,
+          borderLeft: 'none',
+          borderRight: 'none',
+          borderBottom: 'none',
+        } : {}),
       }}>
+        {onClose && (
+          <button
+            aria-label="Release the seal"
+            onClick={(e) => { e.stopPropagation(); getAudio().back(); onClose(); }}
+            style={{
+              position: 'absolute',
+              top: isSheet ? 10 : 6,
+              right: isSheet ? 10 : 6,
+              width: 40, height: 40,
+              display: 'grid', placeItems: 'center',
+              background: 'rgba(7,6,10,.55)',
+              border: '1px solid rgba(212,168,81,.28)',
+              color: 'var(--parchment-2)',
+              zIndex: 5,
+            }}>
+            <svg viewBox="0 0 16 16" width="13" height="13" fill="none" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round">
+              <path d="M 3.5,3.5 L 12.5,12.5 M 12.5,3.5 L 3.5,12.5" />
+            </svg>
+          </button>
+        )}
         {([[8, 8, 1, 1], [8, 8, -1, 1], [8, 8, 1, -1], [8, 8, -1, -1]] as const).map(([x, y, sx, sy], i) => (
           <svg key={i} viewBox="0 0 20 20" width="14" height="14"
             style={{
@@ -198,11 +242,12 @@ export default function StatPanel({ project, visible, side = 'right', onMouseEnt
                onClick={() => getAudio().confirm()}
                style={{
                  display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 6,
-                 marginTop: 10,
+                 marginTop: 4,
+                 padding: '10px 0',
                  textDecoration: 'none',
                  color: 'var(--parchment-dim)',
                  fontFamily: 'var(--display)',
-                 fontSize: 9,
+                 fontSize: 10,
                  letterSpacing: '.28em',
                  textTransform: 'uppercase',
                  opacity: 0.7,

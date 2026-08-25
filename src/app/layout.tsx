@@ -1,4 +1,4 @@
-import type { Metadata } from 'next';
+import type { Metadata, Viewport } from 'next';
 import { Cormorant_Garamond, Marcellus, Marcellus_SC } from 'next/font/google';
 import { Analytics } from '@vercel/analytics/next';
 import './globals.css';
@@ -29,6 +29,12 @@ const SITE_URL = 'https://shikkari.dev';
 const SITE_TITLE = 'Shikkari — Full-Stack Web Developer';
 const SITE_DESCRIPTION =
   "Shikkari is a full-stack web developer who builds websites and interfaces with React and Next.js, and runs RIKU, a freelance web development studio.";
+
+export const viewport: Viewport = {
+  width: 'device-width',
+  initialScale: 1,
+  viewportFit: 'cover',
+};
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),

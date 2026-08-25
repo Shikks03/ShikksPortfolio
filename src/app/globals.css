@@ -544,3 +544,18 @@ select.twk-field{padding-right:22px;
 .gap-2 { gap: 8px; } .gap-3 { gap: 12px; } .gap-4 { gap: 16px; } .gap-6 { gap: 24px; } .gap-8 { gap: 32px; }
 .absfill { position: absolute; inset: 0; }
 .relative { position: relative; }
+
+/* ── TOUCH DEVICES ─────────────────────────────────────────────
+   The rune cursor is a pointer ritual; touch has no pointer.
+   Restore native cursor behavior and give the ER prompt chips a
+   real finger-sized hit area. */
+@media (hover: none) and (pointer: coarse) {
+  * { cursor: auto !important; }
+  .er-prompt { font-size: 12px; letter-spacing: .24em; }
+  a.er-prompt { min-height: 44px; }
+}
+
+/* Handheld width: hide dev-only chrome that collides with the corner filigree */
+@media (max-width: 700px) {
+  .hero-badge { display: none; }
+}

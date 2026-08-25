@@ -3,6 +3,7 @@
 import { useMemo, useState } from 'react';
 import { motion } from 'framer-motion';
 import { getAudio } from '@/lib/audio';
+import { useViewport } from '@/lib/useViewport';
 import { PORTFOLIO_DATA } from '@/data/portfolio';
 import EmberField from '@/components/shared/EmberField';
 import BackButton from '@/components/shared/BackButton';
@@ -24,6 +25,11 @@ function mulberry32(seed: number) {
 export default function ContactPage({ onBack }: { onBack: () => void }) {
   const data = PORTFOLIO_DATA.contact;
   const [hovered, setHovered] = useState<number | null>(null);
+  const { isMobile, isTablet } = useViewport();
+  // Ward geometry scales down on handhelds so all three stones stay in reach.
+  const SOCKET = isMobile ? 88 : 118;
+  const SEAL   = isMobile ? 70 : 96;
+  const doorScale = isMobile ? 1 : isTablet ? 1.2 : 1.5;
 
   // god-rays bursting from the seam (behind the door, haloing the silhouette)
   const rays = useMemo(() => {
@@ -63,7 +69,7 @@ export default function ContactPage({ onBack }: { onBack: () => void }) {
       }} />
 
       {/* ── EMBERS ── */}
-      <EmberField count={56} intense={0.9} tall />
+      <EmberField count={isMobile ? 28 : 56} intense={0.9} tall />
 
       {/* ── HEADER (centered, animated) ── */}
       <motion.header
@@ -77,14 +83,14 @@ export default function ContactPage({ onBack }: { onBack: () => void }) {
           flexDirection: 'column',
           alignItems: 'center',
           textAlign: 'center',
-          paddingTop: 32,
+          padding: isMobile ? '68px 24px 0' : '32px 0 0',
           zIndex: 20,
         }}
       >
         <div className="eyebrow" style={{ color: 'var(--gold-deep)', marginBottom: 6 }}>
           ‹ Codex IV · Means of Summoning ›
         </div>
-        <h1 className="title-disp gold" style={{ fontSize: 46, lineHeight: 1, marginTop: 4 }}>
+        <h1 className="title-disp gold" style={{ fontSize: isMobile ? 30 : 46, lineHeight: 1, marginTop: 4 }}>
           Seek an Audience
         </h1>
         <p style={{
@@ -99,8 +105,8 @@ export default function ContactPage({ onBack }: { onBack: () => void }) {
           {data.intro}
         </p>
 
-        {/* back button — top right */}
-        <div style={{ position: 'absolute', top: 36, right: 52 }}>
+        {/* back button — top right, clear of the mute toggle */}
+        <div style={{ position: 'absolute', top: 36, right: 88 }}>
           <BackButton onBack={onBack} />
         </div>
       </motion.header>
@@ -113,7 +119,7 @@ export default function ContactPage({ onBack }: { onBack: () => void }) {
         alignItems: 'center',
         justifyContent: 'center',
         marginTop: -8,
-        transform: 'scale(1.5)',
+        transform: `scale(${doorScale})`,
         transformOrigin: 'center center',
       }}>
         <motion.div
@@ -122,8 +128,8 @@ export default function ContactPage({ onBack }: { onBack: () => void }) {
           transition={{ duration: 0.9, ease: [0.23, 1, 0.32, 1], delay: 0.22 }}
           style={{
             position: 'relative',
-            width: 660,
-            height: 560,
+            width: isMobile ? 'min(94vw, 660px)' : 660,
+            aspectRatio: '660 / 560',
             flexShrink: 0,
           }}
         >
@@ -188,7 +194,7 @@ export default function ContactPage({ onBack }: { onBack: () => void }) {
             flexDirection: 'row',
             alignItems: 'flex-start',
             justifyContent: 'center',
-            gap: 48,
+            gap: isMobile ? 16 : 48,
             zIndex: 30,
             pointerEvents: 'all',
           }}>
@@ -197,8 +203,6 @@ export default function ContactPage({ onBack }: { onBack: () => void }) {
               const hint = isMail ? 'send word ✉' : 'open ↗';
               const active = hovered === i;
               const delay = 0.52 + i * 0.16;
-              const SOCKET = 118;
-              const SEAL = 96;
               // a shallow keystone arc so the three wards don't sit dead-level
               const arc = [7, -5, 7][i] ?? 0;
 
@@ -341,19 +345,21 @@ export default function ContactPage({ onBack }: { onBack: () => void }) {
                     marginTop: 22,
                   }}>
                     <div className="eyebrow" style={{
-                      fontSize: 10,
-                      letterSpacing: '.5em',
+                      fontSize: 11,
+                      letterSpacing: isMobile ? '.34em' : '.5em',
                       color: 'var(--gold-deep)',
                     }}>
                       {h.label}
                     </div>
                     <div style={{
                       fontFamily: 'var(--display)',
-                      fontSize: 12,
-                      letterSpacing: '.08em',
+                      fontSize: isMobile ? 11 : 12,
+                      letterSpacing: isMobile ? '.02em' : '.08em',
                       color: 'var(--parchment-2)',
                       marginTop: 2,
                       textAlign: 'center',
+                      maxWidth: isMobile ? 112 : 'none',
+                      overflowWrap: 'anywhere',
                     }}>
                       {h.value}
                     </div>

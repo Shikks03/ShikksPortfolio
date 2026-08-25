@@ -3,6 +3,7 @@
 import { useState, useEffect, useCallback } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
 import { MENU_ITEMS } from '@/data/portfolio';
+import { useViewport } from '@/lib/useViewport';
 import CustomCursor from '@/components/cursor/CustomCursor';
 import AudioToggle from '@/components/AudioToggle';
 import MainMenu from '@/components/menu/MainMenu';
@@ -36,6 +37,7 @@ export default function Portfolio() {
   const [muted, setMuted] = useState(true);
   const [showHint, setShowHint] = useState(true);
   const [wipe, setWipe] = useState(false);
+  const { isCoarse } = useViewport();
 
   // Apply default tweaks to CSS vars
   useEffect(() => {
@@ -106,7 +108,7 @@ export default function Portfolio() {
 
       {wipe && <PageTransition />}
 
-      <CustomCursor style={TWEAKS.cursor} />
+      {!isCoarse && <CustomCursor style={TWEAKS.cursor} />}
 
       <AudioToggle muted={muted} setMuted={setMuted} />
 

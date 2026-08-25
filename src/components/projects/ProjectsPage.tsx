@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect, useRef, useMemo } from 'react';
 import { getAudio } from '@/lib/audio';
+import { useViewport } from '@/lib/useViewport';
 import { PORTFOLIO_DATA, type Project } from '@/data/portfolio';
 import EmberField from '@/components/shared/EmberField';
 import BackButton from '@/components/shared/BackButton';
@@ -126,6 +127,7 @@ function LeyLine({ a, b, state, bounds }: LeyLineProps) {
 
 export default function ProjectsPage({ onBack }: { onBack: () => void }) {
   const data = PORTFOLIO_DATA;
+  const { isMobile, isCoarse } = useViewport();
   const [hoveredId, setHoveredId] = useState<string | null>(null);
   const [lockedId, setLockedId]   = useState<string | null>(null);
   const [panelHovered, setPanelHovered] = useState(false);
@@ -143,7 +145,27 @@ export default function ProjectsPage({ onBack }: { onBack: () => void }) {
     measure();
     window.addEventListener('resize', measure);
     return () => window.removeEventListener('resize', measure);
-  }, []);
+  }, [isMobile]);
+
+  // On handheld screens the wide constellation becomes a descending star-path:
+  // the same stones, re-hung on a tall scrolling field in a staggered zigzag.
+  const displayProjects = useMemo(() => {
+    if (!isMobile) return data.projects;
+    const sorted = [...data.projects].sort((a, b) => (a.yp - b.yp) || (a.xp - b.xp));
+    return sorted.map((p, i) => ({
+      ...p,
+      xp: i % 2 === 0 ? 30 : 70,
+      yp: 4 + (i * 90) / (sorted.length - 1),
+    }));
+  }, [data.projects, isMobile]);
+
+  // The ley-lines follow the path downward instead of the desktop cross-links.
+  const edges = useMemo<[string, string][]>(() => {
+    if (!isMobile) return data.constellationEdges;
+    return displayProjects.slice(1).map((p, i) => [displayProjects[i].id, p.id] as [string, string]);
+  }, [isMobile, displayProjects, data.constellationEdges]);
+
+  const SEAL_SIZE = isMobile ? 96 : 116;
 
   const sealProject = useMemo(
     () => data.projects.find(p => p.id === hoveredId),
@@ -163,9 +185,9 @@ export default function ProjectsPage({ onBack }: { onBack: () => void }) {
 
   const projectById = useMemo(() => {
     const m: Record<string, Project> = {};
-    data.projects.forEach(p => { m[p.id] = p; });
+    displayProjects.forEach(p => { m[p.id] = p; });
     return m;
-  }, [data.projects]);
+  }, [displayProjects]);
 
   return (
     <div onClick={() => setLockedId(null)} style={{ position: 'absolute', inset: 0, overflow: 'hidden' }}>
@@ -181,12 +203,12 @@ export default function ProjectsPage({ onBack }: { onBack: () => void }) {
 
       {/* ── Layer 2: Starfield (ash-dust faintest layer) ────────────── */}
       <div style={{ position: 'absolute', inset: 0, zIndex: 1 }}>
-        <Starfield count={90} />
+        <Starfield count={isMobile ? 50 : 90} />
       </div>
 
       {/* ── Layer 3: EmberField — embers rising behind seals ────────── */}
       <div style={{ position: 'absolute', inset: 0, zIndex: 2 }}>
-        <EmberField count={40} intense={0.7} />
+        <EmberField count={isMobile ? 20 : 40} intense={0.7} />
       </div>
 
       {/* ── Layer 4: forge-glow — warm radial at bottom-center ──────── */}
@@ -198,7 +220,10 @@ export default function ProjectsPage({ onBack }: { onBack: () => void }) {
 
       {/* ── Header / BackButton ─────────────────────────────────────── */}
       <div style={{
-        position: 'absolute', top: 36, left: 64, right: 64,
+        position: 'absolute',
+        top: isMobile ? 68 : 36,
+        left: isMobile ? 20 : 64,
+        right: isMobile ? 80 : 64,
         display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end',
         zIndex: 20,
       }}>
@@ -207,7 +232,7 @@ export default function ProjectsPage({ onBack }: { onBack: () => void }) {
             ‹ Codex II ·  The Vault of Lesser Stones ›
           </div>
           <h1 className="title-disp" style={{
-            fontSize: 42,
+            fontSize: isMobile ? 28 : 42,
             marginTop: 6,
             color: 'var(--parchment)',
           }}>
@@ -215,21 +240,37 @@ export default function ProjectsPage({ onBack }: { onBack: () => void }) {
           </h1>
           <div style={{
             fontFamily: 'var(--serif)', fontStyle: 'italic',
-            fontSize: 14,
+            fontSize: isMobile ? 13 : 14,
             color: 'var(--parchment-dim)',
             marginTop: 4,
           }}>
-            Trace a stone to behold the rune it bears. Strike to step within.
+            {isCoarse
+              ? 'Touch a stone to behold the rune it bears. Strike it once more to step within.'
+              : 'Trace a stone to behold the rune it bears. Strike to step within.'}
           </div>
         </div>
         <BackButton onBack={onBack} />
       </div>
 
-      {/* ── Measured field ──────────────────────────────────────────── */}
-      <div ref={fieldRef} style={{
+      {/* ── Measured field — on handhelds it scrolls as a tall star-path ── */}
+      <div className="scroll" style={isMobile ? {
+        position: 'absolute',
+        inset: '190px 0 0 0',
+        overflowY: 'auto',
+        WebkitOverflowScrolling: 'touch',
+        zIndex: 4,
+      } : {
         position: 'absolute',
         inset: '150px 56px 96px 56px',
         zIndex: 4,
+      }}>
+      <div ref={fieldRef} style={isMobile ? {
+        position: 'relative',
+        width: '100%',
+        height: 1500,
+      } : {
+        position: 'absolute',
+        inset: 0,
       }}>
 
         {/* ── Layer 5: Ley-line SVG (below seals) ─────────────────── */}
@@ -248,7 +289,7 @@ export default function ProjectsPage({ onBack }: { onBack: () => void }) {
             </filter>
           </defs>
           <g filter="url(#ley-glow)">
-            {data.constellationEdges.map(([a, b], i) => {
+            {edges.map(([a, b], i) => {
               const A = projectById[a], B = projectById[b];
               if (!A || !B) return null;
               let lineState: 'active' | 'dimmed' | 'neutral' = 'neutral';
@@ -263,7 +304,7 @@ export default function ProjectsPage({ onBack }: { onBack: () => void }) {
         </svg>
 
         {/* ── Layer 6: Seal nodes ──────────────────────────────────── */}
-        {data.projects.map((p) => {
+        {displayProjects.map((p) => {
           const isHovered = hoveredId === p.id;
           const isLocked  = lockedId  === p.id;
           const isActive  = isHovered || isLocked;
@@ -288,8 +329,8 @@ export default function ProjectsPage({ onBack }: { onBack: () => void }) {
                 filter: isDimmed ? 'brightness(.55) saturate(.8)' : 'none',
                 transition: 'filter .5s ease, transform .45s cubic-bezier(.2,.7,.2,1)',
               }}>
-              <div style={{ position: 'relative', width: 116, height: 116 }}>
-                <SealStone runeId={p.id} tint={p.tint} size={116} lit={isActive} />
+              <div style={{ position: 'relative', width: SEAL_SIZE, height: SEAL_SIZE }}>
+                <SealStone runeId={p.id} tint={p.tint} size={SEAL_SIZE} lit={isActive} />
 
                 {/* Project name label */}
                 <div style={{
@@ -298,8 +339,8 @@ export default function ProjectsPage({ onBack }: { onBack: () => void }) {
                   transform: 'translateX(-50%)',
                   whiteSpace: 'nowrap',
                   fontFamily: 'var(--display)',
-                  fontSize: 10,
-                  letterSpacing: '.28em',
+                  fontSize: 11,
+                  letterSpacing: '.24em',
                   textTransform: 'uppercase',
                   color: isActive ? 'var(--gold-bright)' : 'var(--parchment-dim)',
                   textShadow: isActive ? '0 0 12px rgba(241,210,122,.6)' : 'none',
@@ -313,29 +354,36 @@ export default function ProjectsPage({ onBack }: { onBack: () => void }) {
           );
         })}
       </div>
+      </div>
 
       {/* ── StatPanel ───────────────────────────────────────────────── */}
-      {/* Anchor to the side opposite the hovered rune so the panel never
-          covers it (which would trigger a mouseleave/enter flicker loop). */}
+      {/* Desktop: anchored to the side opposite the hovered rune so the
+          panel never covers it. Handheld: a bottom sheet over the path. */}
       <StatPanel
         project={project}
         visible={!!project}
+        variant={isMobile ? 'sheet' : 'side'}
         side={project && project.xp > 50 ? 'left' : 'right'}
+        onClose={() => { setLockedId(null); setHoveredId(null); setPanelHovered(false); }}
         onMouseEnter={() => setPanelHovered(true)}
         onMouseLeave={() => setPanelHovered(false)}
         onClick={(e: React.MouseEvent) => e.stopPropagation()}
       />
 
       {/* ── Bottom prompt ────────────────────────────────────────────── */}
-      <div style={{
-        position: 'absolute', bottom: 28, left: 64, zIndex: 20,
-        opacity: (hoveredId || lockedId) ? 0 : 1,
-        transition: 'opacity .3s',
-      }}>
-        <div className="er-prompt" style={{ color: 'var(--parchment-dim)' }}>
-          <span className="key">✦</span> Hover a stone &nbsp;·&nbsp; <span className="key">Click</span> to bind the seal
+      {!isMobile && (
+        <div style={{
+          position: 'absolute', bottom: 28, left: 64, zIndex: 20,
+          opacity: (hoveredId || lockedId) ? 0 : 1,
+          transition: 'opacity .3s',
+        }}>
+          <div className="er-prompt" style={{ color: 'var(--parchment-dim)' }}>
+            {isCoarse
+              ? <><span className="key">✦</span> Touch a stone to bind the seal</>
+              : <><span className="key">✦</span> Hover a stone &nbsp;·&nbsp; <span className="key">Click</span> to bind the seal</>}
+          </div>
         </div>
-      </div>
+      )}
     </div>
   );
 }

@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { getAudio } from '@/lib/audio';
+import { useViewport } from '@/lib/useViewport';
 import { PORTFOLIO_DATA } from '@/data/portfolio';
 import FiligreeCorner from '@/components/shared/FiligreeCorner';
 import HeroBackground from '@/components/shared/HeroBackground';
@@ -29,6 +30,8 @@ export default function MainMenu({ onNavigate, menuItems }: MainMenuProps) {
   const [hovered, setHovered] = useState<string | null>(null);
   const [focusedIdx, setFocusedIdx] = useState<number | null>(null);
   const data = PORTFOLIO_DATA;
+  const { isMobile, isCoarse } = useViewport();
+  const filigree = isMobile ? 64 : 110;
 
   useEffect(() => {
     function onKey(e: KeyboardEvent) {
@@ -62,19 +65,19 @@ export default function MainMenu({ onNavigate, menuItems }: MainMenuProps) {
       {/* SCREEN-EDGE FILIGREE CORNERS */}
       <motion.div initial={{ opacity: 0 }} animate={{ opacity: 0.9 }} transition={{ duration: 1.4, delay: 0.3 }}
         style={{ position: 'absolute', top: 18, left: 18, zIndex: 30, pointerEvents: 'none' }}>
-        <FiligreeCorner size={110} flip="tl" />
+        <FiligreeCorner size={filigree} flip="tl" />
       </motion.div>
       <motion.div initial={{ opacity: 0 }} animate={{ opacity: 0.9 }} transition={{ duration: 1.4, delay: 0.4 }}
         style={{ position: 'absolute', top: 18, right: 18, zIndex: 30, pointerEvents: 'none' }}>
-        <FiligreeCorner size={110} flip="tr" />
+        <FiligreeCorner size={filigree} flip="tr" />
       </motion.div>
       <motion.div initial={{ opacity: 0 }} animate={{ opacity: 0.9 }} transition={{ duration: 1.4, delay: 0.5 }}
         style={{ position: 'absolute', bottom: 18, left: 18, zIndex: 30, pointerEvents: 'none' }}>
-        <FiligreeCorner size={110} flip="bl" />
+        <FiligreeCorner size={filigree} flip="bl" />
       </motion.div>
       <motion.div initial={{ opacity: 0 }} animate={{ opacity: 0.9 }} transition={{ duration: 1.4, delay: 0.6 }}
         style={{ position: 'absolute', bottom: 18, right: 18, zIndex: 30, pointerEvents: 'none' }}>
-        <FiligreeCorner size={110} flip="br" />
+        <FiligreeCorner size={filigree} flip="br" />
       </motion.div>
 
       {/* GIANT CENTERED TITLE */}
@@ -86,15 +89,16 @@ export default function MainMenu({ onNavigate, menuItems }: MainMenuProps) {
         paddingTop: 'min(20vh, 200px)',
       }}>
         <motion.div {...reveal(0.12)} style={{
-          display: 'flex', alignItems: 'center', gap: 22,
-          marginBottom: 28,
+          display: 'flex', alignItems: 'center', gap: isMobile ? 10 : 22,
+          marginBottom: isMobile ? 20 : 28,
+          padding: '0 16px',
           color: 'var(--parchment-dim)',
         }}>
-          <span style={{ width: 80, height: 1, background: 'linear-gradient(to right, transparent, currentColor)' }} />
-          <span className="eyebrow" style={{ marginBottom: 0 }}>
+          <span style={{ width: isMobile ? 24 : 80, height: 1, background: 'linear-gradient(to right, transparent, currentColor)' }} />
+          <span className="eyebrow" style={{ marginBottom: 0, textAlign: 'center' }}>
             A Portfolio of the Lands Coded
           </span>
-          <span style={{ width: 80, height: 1, background: 'linear-gradient(to left, transparent, currentColor)' }} />
+          <span style={{ width: isMobile ? 24 : 80, height: 1, background: 'linear-gradient(to left, transparent, currentColor)' }} />
         </motion.div>
         <motion.h1 {...reveal(0.4)} className="title-disp gold" style={{
           fontSize: 'min(14vw, 24vh, 200px)',
@@ -115,27 +119,31 @@ export default function MainMenu({ onNavigate, menuItems }: MainMenuProps) {
         </motion.div>
         <motion.div {...reveal(0.9)} style={{
           marginTop: 14,
-          display: 'flex', alignItems: 'center', gap: 18,
+          display: 'flex', alignItems: 'center', gap: isMobile ? 10 : 18,
           fontFamily: 'var(--serif)',
           fontStyle: 'italic',
-          fontSize: 17,
-          letterSpacing: '.24em',
+          fontSize: isMobile ? 12.5 : 17,
+          letterSpacing: isMobile ? '.16em' : '.24em',
           color: 'var(--parchment-2)',
           textTransform: 'uppercase',
+          textAlign: 'center',
+          padding: '0 16px',
         }}>
-          <span style={{ width: 60, height: 1, background: 'currentColor', opacity: .5 }} />
+          <span style={{ width: isMobile ? 20 : 60, height: 1, background: 'currentColor', opacity: .5 }} />
           {data.hero.epithet}
-          <span style={{ width: 60, height: 1, background: 'currentColor', opacity: .5 }} />
+          <span style={{ width: isMobile ? 20 : 60, height: 1, background: 'currentColor', opacity: .5 }} />
         </motion.div>
       </div>
 
       {/* MENU — bottom left, like ER's main menu */}
       <motion.div {...reveal(1.2)} style={{
         position: 'absolute',
-        left: '5vw', bottom: '10vh',
+        left: isMobile ? 20 : '5vw',
+        right: isMobile ? 20 : 'auto',
+        bottom: isMobile ? '9vh' : '10vh',
         display: 'flex', flexDirection: 'column',
         gap: 2,
-        minWidth: 300,
+        minWidth: isMobile ? 0 : 300,
       }}>
         <div className="eyebrow" style={{ marginBottom: 14, color: 'var(--gold-deep)' }}>
           ‹ Menu ›
@@ -161,14 +169,14 @@ export default function MainMenu({ onNavigate, menuItems }: MainMenuProps) {
           opacity: .55,
           textTransform: 'uppercase',
         }}>
-          v. 0.1 — Tarnished Build
+          v. 0.1 · Tarnished Build
         </div>
         <a
           href="https://riku.works"
           target="_blank"
           rel="noopener noreferrer"
           className="riku-credit"
-          style={{ marginTop: 6, paddingLeft: 28 }}
+          style={{ marginTop: 2, padding: '10px 12px 10px 28px', alignSelf: 'flex-start' }}
           onMouseEnter={() => getAudio().hover()}
         >
           Site by RIKU
@@ -178,6 +186,7 @@ export default function MainMenu({ onNavigate, menuItems }: MainMenuProps) {
       {/* RIGHT-SIDE CARTOUCHE — a small ornament with crest */}
       <div style={{
         position: 'absolute',
+        display: isMobile ? 'none' : 'block',
         right: '6vw', top: 'calc(50% + 4vh)',
         transform: 'translateY(-50%)',
         width: 'min(110px, 12vw)',
@@ -212,16 +221,20 @@ export default function MainMenu({ onNavigate, menuItems }: MainMenuProps) {
       {/* BOTTOM BAR — ER-style prompts */}
       <motion.div {...reveal(1.7)} style={{
         position: 'absolute',
-        bottom: 24, left: 0, right: 0,
-        display: 'flex', justifyContent: 'space-between',
-        padding: '0 64px',
+        bottom: isMobile ? 'max(14px, env(safe-area-inset-bottom))' : 24,
+        left: 0, right: 0,
+        display: 'flex',
+        justifyContent: isCoarse ? 'center' : 'space-between',
+        padding: isMobile ? '0 20px' : '0 64px',
       }}>
-        <div className="er-prompt">
-          <span className="key">↑↓</span> Navigate
-          <span style={{ width: 18 }} />
-          <span className="key">Enter</span> Select
-        </div>
-        <div className="er-prompt" style={{ color: 'var(--gold-deep)' }}>
+        {!isCoarse && (
+          <div className="er-prompt">
+            <span className="key">↑↓</span> Navigate
+            <span style={{ width: 18 }} />
+            <span className="key">Enter</span> Select
+          </div>
+        )}
+        <div className="er-prompt" style={{ color: 'var(--gold-deep)', whiteSpace: 'nowrap' }}>
           ✦ &nbsp; Grace will guide you &nbsp; ✦
         </div>
       </motion.div>

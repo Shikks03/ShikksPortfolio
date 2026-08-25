@@ -7,7 +7,7 @@
 export const DOOR_SVG = `
 <svg
   viewBox="0 0 660 560"
-  width="660" height="560"
+  width="100%" height="100%"
   overflow="visible"
   style="position:absolute;top:0;left:0;z-index:20;pointer-events:none;"
   aria-hidden="true">

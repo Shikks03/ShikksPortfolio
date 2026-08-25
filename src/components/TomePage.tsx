@@ -2,27 +2,33 @@
 
 import EmberField from '@/components/shared/EmberField';
 import BackButton from '@/components/shared/BackButton';
+import { useViewport } from '@/lib/useViewport';
 
 export default function TomePage({ onBack }: { onBack: () => void }) {
+  const { isMobile } = useViewport();
   return (
     <div style={{ position: 'absolute', inset: 0, overflow: 'hidden' }}>
       <div style={{
         position: 'absolute', inset: 0,
         background: 'radial-gradient(ellipse at 50% 50%, rgba(122,46,31,.12) 0%, transparent 60%), linear-gradient(180deg, #0a0809 0%, #050307 100%)',
       }} />
-      <EmberField count={20} intense={0.5} />
+      <EmberField count={isMobile ? 12 : 20} intense={0.5} />
       <div style={{
-        position: 'absolute', top: 36, left: 64, right: 64,
+        position: 'absolute',
+        top: isMobile ? 68 : 36,
+        left: isMobile ? 20 : 64,
+        right: isMobile ? 80 : 64,
         display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end',
       }}>
         <div>
           <div className="eyebrow" style={{ color: 'var(--gold-deep)' }}>‹ Codex V · The Sealed Tome ›</div>
-          <h1 className="title-disp" style={{ fontSize: 42, marginTop: 6 }}>The Tarnished&apos;s Tome</h1>
+          <h1 className="title-disp" style={{ fontSize: isMobile ? 28 : 42, marginTop: 6 }}>The Tarnished&apos;s Tome</h1>
         </div>
         <BackButton onBack={onBack} />
       </div>
       <div style={{
-        position: 'absolute', inset: '180px 64px 64px 64px',
+        position: 'absolute',
+        inset: isMobile ? '160px 24px 24px 24px' : '180px 64px 64px 64px',
         display: 'grid', placeItems: 'center',
       }}>
         <div style={{ textAlign: 'center', maxWidth: 560 }}>
