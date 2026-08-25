@@ -116,8 +116,8 @@ export function Rune({ size = 120, ...rest }: CarvedProps) {
    irregular and asymmetric on purpose — chiselled by hand, not plotted.
    ================================================================= */
 
-/* Emphatora — "Banner of Distant Courts": a herald's standard bearing a globe. */
-const drawEmphatora: RuneDraw = () => (
+/* Empathora — "Banner of Distant Courts": a herald's standard bearing a globe. */
+const drawEmpathora: RuneDraw = () => (
   <>
     {/* herald's staff + finial */}
     <path d="M46,22 L46,98" />
@@ -342,7 +342,7 @@ const drawEmail: RuneDraw = () => (
 
 const RUNE_DRAWS: Record<string, RuneDraw> = {
   riku: drawRiku,
-  emphatora: drawEmphatora,
+  empathora: drawEmpathora,
   salu: drawSalu,
   shikkstracker: drawShikkstracker,
   csnight: drawCsnight,

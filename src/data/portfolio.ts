@@ -64,8 +64,8 @@ export const PORTFOLIO_DATA: PortfolioData = {
       xp: 71, yp: 5,
     },
     {
-      id: 'emphatora',
-      name: 'Emphatora',
+      id: 'empathora',
+      name: 'Empathora',
       epithet: 'Standard of the Common Weal',
       type: 'Covenant Banner',
       rarity: 'Rare',
@@ -74,7 +74,7 @@ export const PORTFOLIO_DATA: PortfolioData = {
       shape: 'kite',
       stats: { ATK: 34, FAITH: 58, ARC: 33, SPD: 41 },
       tags: ['Next.js 14', 'React 18', 'TypeScript', 'Tailwind · Motion', 'Static Site'],
-      desc: 'A four page site for a Philippine training and development organization and the six programs it runs, which reach children, older adults, women, men, climate resilience, and a community fellowship. Nothing sits behind it. No API routes, no server actions, no database, every page prerendered at build time. The inner pages check for reduced motion before animating anything.',
+      desc: 'A four page site for a Philippine training and development organization and its six programs, one each for children, older adults, women, men, climate resilience, and community fellowship. It carries no API routes, no server actions, and no database; every page is prerendered at build time. The inner pages check for reduced motion before animating anything.',
       github: 'https://github.com/Shikks03',
       url: 'https://empathora-international.vercel.app',
       xp: 14, yp: 28,
@@ -122,7 +122,7 @@ export const PORTFOLIO_DATA: PortfolioData = {
       shape: 'diamond',
       stats: { ATK: 28, FAITH: 64, ARC: 42, SPD: 30 },
       tags: ['Next.js 16', 'React 19', 'MongoDB', 'Tailwind 4', 'Civic Tech'],
-      desc: 'A voting system for Filipino club and community elections, named for halalan, Tagalog for election. Each voter gets one nine digit token, and a MongoDB transaction spends it in the same breath the ballot lands, so a double vote loses a race rather than slipping through. Results stream to the tally board over a change stream.',
+      desc: 'A voting system for Filipino club and community elections, named for halalan, Tagalog for election. Each voter gets one nine digit token, and a MongoDB transaction spends it in the same breath the ballot lands, so a double vote loses a race rather than slipping through. Results flow to the tally board over a change stream.',
       github: 'https://github.com/Shikks03',
       xp: 86, yp: 26,
     },
@@ -137,7 +137,7 @@ export const PORTFOLIO_DATA: PortfolioData = {
       shape: 'shard',
       stats: { ATK: 36, FAITH: 39, ARC: 55, SPD: 41 },
       tags: ['React 18', 'Vite 5', 'Supabase', 'Tailwind', 'EdTech'],
-      desc: 'Feed it a quizfetch export, or just paste your notes, and QuizGive turns them into a graded quiz. Five parsers race over the pasted text, term and definition pairs, question and answer blocks, markdown tables, numbered lists, raw JSON, and whichever reads it most confidently wins. Miss a few and you can retake only what you got wrong.',
+      desc: 'Feed it a quizfetch export, or just paste your notes, and QuizGive turns them into a graded quiz. Five parsers race over the pasted text (term and definition pairs, question and answer blocks, markdown tables, numbered lists, raw JSON) and whichever reads it most confidently wins. Miss a few and you can retake only what you got wrong.',
       url: 'https://quiz-give.vercel.app',
       github: 'https://github.com/Shikks03',
       xp: 22, yp: 70,
@@ -209,16 +209,16 @@ export const PORTFOLIO_DATA: PortfolioData = {
   constellationEdges: [
     ['riku', 'ihalalan'],
     ['riku', 'meowchi'],
-    ['emphatora', 'csnight'],
+    ['empathora', 'csnight'],
     ['csnight', 'meowchi'],
     ['meowchi', 'ihalalan'],
     ['oversee', 'azerotech'],
-    ['quizgive', 'emphatora'],
+    ['quizgive', 'empathora'],
     ['quizgive', 'oversee'],
     ['salu', 'ihalalan'],
     ['salu', 'azerotech'],
     ['salu', 'oversee'],
-    ['shikkstracker', 'emphatora'],
+    ['shikkstracker', 'empathora'],
     ['shikkstracker', 'csnight'],
     ['shikkstracker', 'quizgive'],
   ],
@@ -229,17 +229,17 @@ export const PORTFOLIO_DATA: PortfolioData = {
     runes: 12480,
     class: 'Full-Stack Developer',
     intro:
-      'Shikkari is a full-stack developer and designer who builds for real people — small, useful things ' +
-      'shipped end to end, from the interface you touch to the system running beneath it. Comfortable across ' +
-      'the whole stack and just as at home shaping how something looks and feels. Along the way, the same ' +
-      'hands that write code came to lead an order — running outreach, marketing, and eventually a whole ' +
-      'chapter. What follows is the record: the attributes, the tools in hand, and the deeds along the road.',
+      'Shikkari is a full-stack developer and designer who builds small, useful things for real people ' +
+      'and ships them end to end, from the interface down to the system underneath. The same hands that ' +
+      'write the code also shape how it looks and feels, and somewhere along the road they came to lead ' +
+      'an order: first publicity, then outreach and marketing, then the whole chapter. This page is the ' +
+      'record of it.',
     skills: [
-      { school: 'Frontcraft',   note: 'Front-end work — the interfaces people actually use.',
+      { school: 'Frontcraft',   note: 'Front-end work, the part people see and touch.',
         arts: ['React', 'Next.js', 'TypeScript', 'Tailwind', 'Framer Motion'] },
       { school: 'Design Arts',  note: 'Design and brand, from wireframe to finished feel.',
         arts: ['UI / UX', 'Brand & Identity', 'Motion', 'Figma'] },
-      { school: 'Systemcraft',  note: 'Under the hood — data, delivery, and real-time.',
+      { school: 'Systemcraft',  note: 'Under the hood: data, delivery, and realtime.',
         arts: ['PWA', 'Realtime', 'CMS & APIs', 'Web Audio'] },
     ],
     stats: [
@@ -258,14 +258,14 @@ export const PORTFOLIO_DATA: PortfolioData = {
       { year: '2025',      title: 'Best Outreach Activity',       org: 'FEU Tech (Award)',
         body: 'A laurel awarded for the year\'s outreach campaign. The hall remembers.' },
       { year: '2025–2026', title: 'Director for Marketing',       org: 'FEU Tech · ACM',
-        body: 'Tasked with the chapter\'s voice. Each banner, post, and sigil passed beneath this hand.' },
+        body: 'Keeper of the chapter\'s voice. Each banner, post, and sigil passed beneath this hand.' },
       { year: '2026',      title: 'President',                    org: 'FEU Tech · ACM',
         body: 'The seat at the head of the round table. Stewardship of the order.' },
     ],
   },
 
   contact: {
-    intro: 'Three sealed stones bear the ways to reach me — strike one, and the way opens.',
+    intro: 'Three sealed stones bear the ways to reach me. Strike one, and the way opens.',
     handles: [
       { label: 'GitHub',   value: 'github.com/Shikks03',      href: 'https://github.com/Shikks03',                           rune: 'github',   tint: '#8a93a6' },
       { label: 'LinkedIn', value: 'in/shikkari-ipil',         href: 'https://www.linkedin.com/in/shikkari-ipil-94b5b4368/',  rune: 'linkedin', tint: '#3a6b8a' },
