@@ -19,6 +19,20 @@ export interface Project {
   yp: number;
 }
 
+/** The ASR laurels, carried at the same rank as any other Chronicle section. */
+export interface Honors {
+  label: string;
+  note: string;
+  awards: Array<{
+    kind: string;
+    event: string;
+    detail: string;
+    /** The night's highest honor, marked by the laurel seal rather than by scale. */
+    lead?: boolean;
+  }>;
+  footnote: string;
+}
+
 export interface PortfolioData {
   hero: { name: string; epithet: string; subtitle: string };
   projects: Project[];
@@ -32,6 +46,7 @@ export interface PortfolioData {
     skills: Array<{ school: string; gloss: string; note: string; arts: string[] }>;
     stats: Array<{ key: string; val: number; note: string }>;
     timeline: Array<{ year: string; title: string; org: string; body: string }>;
+    honors: Honors;
   };
   contact: {
     intro: string;
@@ -293,12 +308,30 @@ export const PORTFOLIO_DATA: PortfolioData = {
       { year: '2024–2025', title: 'Director for Outreach',        org: 'FEU Tech · ACM',
         body: 'Carried the chapter beyond its walls. Forged ties with neighboring guilds and lesser strongholds.' },
       { year: '2025',      title: 'Best Outreach Activity',       org: 'FEU Tech (Award)',
-        body: 'A laurel awarded for the year\'s outreach campaign. The hall remembers.' },
-      { year: '2025–2026', title: 'Director for Marketing',       org: 'FEU Tech · ACM',
+        body: 'A laurel awarded for the year\'s outreach campaign, and the first of two consecutive. The hall remembers.' },
+      { year: 'Aug 2025 – Jan 2026', title: 'Director for Marketing', org: 'FEU Tech · ACM',
         body: 'Keeper of the chapter\'s voice. Each banner, post, and sigil passed beneath this hand.' },
-      { year: '2026',      title: 'President',                    org: 'FEU Tech · ACM',
+      { year: 'Jan 2026 – Aug 2026', title: 'President',              org: 'FEU Tech · ACM',
         body: 'The seat at the head of the round table. Stewardship of the order.' },
     ],
+
+    honors: {
+      label: 'Laurels of the Term',
+      note:
+        'Annual Student Recognition, A.Y. 2025–2026. Every organization award of the night, ' +
+        'claimed in a single term.',
+      awards: [
+        { kind: 'Best Organization',         event: 'FEU Tech · ACM Student Chapter', lead: true,
+          detail: 'The highest honor of the night, and the three beneath it.' },
+        { kind: 'Best Outreach Activity',    event: 'Ctrl + Prompt',
+          detail: 'Third year of the Virlanie partnership, and the second win in a row.' },
+        { kind: 'Best Non-Academic Activity', event: 'CS Night 2026',
+          detail: 'A masquerade ball for 240, rated 4.77 out of 5.' },
+        { kind: 'Best Academic Activity',    event: 'TechSprint: Asteria',
+          detail: 'A national hackathon for 150, run alongside CS Night.' },
+      ],
+      footnote: 'The fifth laurel of the night, Best Adviser, went to the chapter\'s own.',
+    },
   },
 
   contact: {

@@ -6,6 +6,7 @@ import { PORTFOLIO_DATA } from '@/data/portfolio';
 import { useViewport } from '@/lib/useViewport';
 import EmberField from '@/components/shared/EmberField';
 import BackButton from '@/components/shared/BackButton';
+import HonorsBand from '@/components/achievements/HonorsBand';
 
 const EASE = [0.2, 0.7, 0.2, 1] as const;
 
@@ -14,7 +15,7 @@ interface TimelineItem { year: string; title: string; org: string; body: string 
 interface SkillSchool { school: string; gloss: string; note: string; arts: string[] }
 
 /** Full-width character-introduction band — the class-select flavor text. */
-function IntroBand({ text }: { text: string }) {
+function IntroBand({ text, narrow }: { text: string; narrow: boolean }) {
   const first = text.charAt(0);
   const rest = text.slice(1);
   return (
@@ -29,8 +30,11 @@ function IntroBand({ text }: { text: string }) {
           'radial-gradient(ellipse at 10% -10%, rgba(122,46,31,.16) 0%, transparent 55%),' +
           'linear-gradient(180deg, rgba(20,17,13,.55) 0%, rgba(7,6,10,.32) 100%)',
         boxShadow: 'inset 0 0 50px rgba(0,0,0,.5)',
-        padding: '22px 32px 26px',
+        padding: '26px 34px 30px',
         overflow: 'hidden',
+        /* same reason as HonorsBand: overflow:hidden forfeits the automatic
+           minimum size, so a flex child would be squeezed by the scroll column */
+        flexShrink: 0,
       }}>
       {/* corner ticks, echoing the portrait frame */}
       {([[10, 10, 1, 1], [10, 10, -1, 1], [10, 10, 1, -1], [10, 10, -1, -1]] as const).map(([x, y, sx, sy], i) => (
@@ -47,7 +51,7 @@ function IntroBand({ text }: { text: string }) {
       ))}
 
       <div className="eyebrow" style={{
-        color: 'var(--gold-deep)',
+        color: 'var(--gold)',
         display: 'flex', alignItems: 'center', gap: 10,
       }}>
         <svg viewBox="0 0 24 24" width="15" height="15" style={{ filter: 'drop-shadow(0 0 5px rgba(241,210,122,.5))' }}>
@@ -61,14 +65,20 @@ function IntroBand({ text }: { text: string }) {
 
       <p style={{
         fontFamily: 'var(--serif)', fontStyle: 'italic',
-        fontSize: 15.5, color: 'var(--parchment)',
-        lineHeight: 1.72, marginTop: 14, maxWidth: 940,
+        fontSize: narrow ? 17 : 19, color: 'var(--parchment)',
+        lineHeight: 1.7, marginTop: 16,
+        /* Two balanced columns hold the measure near 70 characters while the
+           band still fills its width. A single column at this size would run
+           to ~117 characters, which is what the old 15.5px setting was hiding. */
+        columns: narrow ? 1 : 2,
+        columnGap: 56,
+        maxWidth: narrow ? 660 : undefined,
         textWrap: 'pretty',
       }}>
         <span style={{
           float: 'left',
           fontFamily: 'var(--display)', fontStyle: 'normal',
-          fontSize: 52, lineHeight: .82,
+          fontSize: 62, lineHeight: .82,
           color: 'var(--gold-bright)',
           padding: '2px 12px 0 0',
           textShadow: '0 0 18px rgba(241,210,122,.4)',
@@ -104,7 +114,7 @@ function RuneChip({ label, delay }: { label: string; delay: number }) {
         <circle cx="8" cy="8" r="2" fill="var(--gold-bright)" />
       </svg>
       <span style={{
-        fontFamily: 'var(--display)', fontSize: 13,
+        fontFamily: 'var(--display)', fontSize: 14,
         letterSpacing: '.05em', color: 'var(--parchment)',
         whiteSpace: 'nowrap',
       }}>{label}</span>
@@ -120,23 +130,23 @@ function SkillSchoolBlock({ s, gi }: { s: SkillSchool; gi: number }) {
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.7, delay: 0.15 + gi * 0.12, ease: EASE }}>
       <div style={{
-        fontFamily: 'var(--display)', fontSize: 12,
-        letterSpacing: '.22em', textTransform: 'uppercase',
+        fontFamily: 'var(--display)', fontSize: 13.5,
+        letterSpacing: '.2em', textTransform: 'uppercase',
         color: 'var(--gold-bright)',
         textShadow: '0 0 12px rgba(241,210,122,.25)',
       }}>
         ‹ {s.school} ›
         {/* plain-language gloss, so the school name never needs decoding */}
         <span style={{
-          fontSize: 9.5, letterSpacing: '.16em',
-          color: 'var(--parchment-dim)', textShadow: 'none',
+          fontSize: 11, letterSpacing: '.14em',
+          color: 'var(--parchment-2)', textShadow: 'none',
           marginLeft: 8, whiteSpace: 'nowrap',
         }}>· {s.gloss}</span>
       </div>
       <div style={{
         fontFamily: 'var(--serif)', fontStyle: 'italic',
-        fontSize: 12.5, color: 'var(--parchment-dim)',
-        marginTop: 3,
+        fontSize: 14, color: 'var(--parchment-2)',
+        marginTop: 4,
       }}>{s.note}</div>
       <div style={{ display: 'flex', flexWrap: 'wrap', gap: 10, marginTop: 14 }}>
         {s.arts.map((a, i) => (
@@ -159,8 +169,8 @@ function Statline({ s, idx }: { s: Stat; idx: number }) {
     }}>
       <div style={{
         fontFamily: 'var(--display)',
-        fontSize: 12,
-        letterSpacing: '.22em',
+        fontSize: 13.5,
+        letterSpacing: '.2em',
         color: 'var(--parchment-2)',
         textTransform: 'uppercase',
       }}>
@@ -168,9 +178,9 @@ function Statline({ s, idx }: { s: Stat; idx: number }) {
         <div style={{
           fontFamily: 'var(--serif)',
           fontStyle: 'italic',
-          fontSize: 11,
+          fontSize: 12.5,
           letterSpacing: '0',
-          color: 'var(--parchment-dim)',
+          color: 'var(--parchment-2)',
           textTransform: 'none',
           marginTop: 2,
         }}>{s.note}</div>
@@ -197,7 +207,7 @@ function Statline({ s, idx }: { s: Stat; idx: number }) {
       <div style={{
         textAlign: 'right',
         fontFamily: 'var(--display)',
-        fontSize: 22,
+        fontSize: 24,
         fontWeight: 600,
         color: 'var(--gold-bright)',
         fontVariantNumeric: 'tabular-nums',
@@ -236,15 +246,15 @@ function TimelineEntry({ e, idx, last }: { e: TimelineItem; idx: number; last: b
 
       <div style={{
         fontFamily: 'var(--display)',
-        fontSize: 10, letterSpacing: '.3em',
-        color: 'var(--parchment-dim)',
+        fontSize: 11.5, letterSpacing: '.24em',
+        color: 'var(--parchment-2)',
         textTransform: 'uppercase',
       }}>
         {e.year} · {e.org}
       </div>
       <div style={{
         fontFamily: 'var(--display)',
-        fontSize: 22, fontWeight: 600,
+        fontSize: 24, fontWeight: 600,
         color: 'var(--gold-bright)',
         letterSpacing: '.04em',
         textShadow: '0 0 16px rgba(241,210,122,.25)',
@@ -254,11 +264,11 @@ function TimelineEntry({ e, idx, last }: { e: TimelineItem; idx: number; last: b
       </div>
       <div style={{
         fontFamily: 'var(--serif)',
-        fontSize: 14,
+        fontSize: 15.5,
         color: 'var(--parchment)',
-        lineHeight: 1.5,
-        marginTop: 6,
-        maxWidth: 540,
+        lineHeight: 1.6,
+        marginTop: 7,
+        maxWidth: 570,
         textWrap: 'pretty',
       }}>{e.body}</div>
     </motion.div>
@@ -422,13 +432,13 @@ export default function AchievementsPage({ onBack }: { onBack: () => void }) {
         zIndex: 20,
       }}>
         <div>
-          <div className="eyebrow" style={{ color: 'var(--gold-deep)' }}>
+          <div className="eyebrow" style={{ color: 'var(--gold)' }}>
             ‹ Codex III · The Tarnished&apos;s Page ›
           </div>
           <h1 className="title-disp" style={{ fontSize: isMobile ? 28 : 42, marginTop: 6 }}>{a.title}</h1>
           <div style={{
             fontFamily: 'var(--serif)', fontStyle: 'italic',
-            fontSize: isMobile ? 13 : 14, color: 'var(--parchment-dim)', marginTop: 4,
+            fontSize: isMobile ? 14.5 : 15.5, color: 'var(--parchment-2)', marginTop: 5,
           }}>
             Status, attributes, and the deeds upon thy name.
           </div>
@@ -438,14 +448,15 @@ export default function AchievementsPage({ onBack }: { onBack: () => void }) {
 
       <div className="scroll" style={{
         position: 'absolute',
-        inset: isMobile ? '205px 16px 0 16px' : isTablet ? '184px 40px 40px 40px' : '150px 56px 56px 56px',
+        /* +8px over the old insets: the header eyebrow and subtitle both grew */
+        inset: isMobile ? '213px 16px 0 16px' : isTablet ? '192px 40px 40px 40px' : '158px 56px 56px 56px',
         display: 'flex',
         flexDirection: 'column',
         gap: isMobile ? 28 : 32,
         overflowY: 'auto',
         paddingBottom: isMobile ? 32 : 0,
       }}>
-        <IntroBand text={a.intro} />
+        <IntroBand text={a.intro} narrow={isMobile || isTablet} />
 
         <div style={{
           display: 'grid',
@@ -455,22 +466,22 @@ export default function AchievementsPage({ onBack }: { onBack: () => void }) {
         <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 20 }}>
           <Portrait />
           <div style={{ textAlign: 'center' }}>
-            <div className="eyebrow" style={{ color: 'var(--gold-deep)' }}>Class</div>
+            <div className="eyebrow" style={{ color: 'var(--gold)' }}>Class</div>
             <div style={{
-              fontFamily: 'var(--display)', fontSize: 20, fontWeight: 600,
+              fontFamily: 'var(--display)', fontSize: 22, fontWeight: 600,
               color: 'var(--gold-bright)', letterSpacing: '.08em',
               marginTop: 4,
             }}>{a.class}</div>
           </div>
           <div style={{ display: 'flex', gap: 28, alignItems: 'center', marginTop: 4 }}>
             <div style={{ textAlign: 'center' }}>
-              <div className="eyebrow" style={{ color: 'var(--gold-deep)' }}>Level</div>
+              <div className="eyebrow" style={{ color: 'var(--gold)' }}>Level</div>
               <div style={{ fontFamily: 'var(--display)', fontSize: 36, color: 'var(--gold-bright)', fontWeight: 600, textShadow: '0 0 16px rgba(241,210,122,.4)' }}>{a.level}</div>
             </div>
             <div style={{ width: 1, height: 50, background: 'rgba(212,168,81,.3)' }} />
             <div style={{ textAlign: 'center' }}>
               <div style={{ display: 'flex', alignItems: 'center', gap: 5, justifyContent: 'center' }}>
-                <div className="eyebrow" style={{ color: 'var(--gold-deep)' }}>Runes</div>
+                <div className="eyebrow" style={{ color: 'var(--gold)' }}>Runes</div>
                 {runesLive && (
                   <div title="Live commit count" style={{
                     width: 6, height: 6, borderRadius: '50%',
@@ -480,13 +491,13 @@ export default function AchievementsPage({ onBack }: { onBack: () => void }) {
                   }} />
                 )}
               </div>
-              <div style={{ fontFamily: 'var(--display)', fontSize: 24, color: 'var(--gold-bright)', fontWeight: 600, fontVariantNumeric: 'tabular-nums' }}>{displayRunes.toLocaleString()}</div>
+              <div style={{ fontFamily: 'var(--display)', fontSize: 26, color: 'var(--gold-bright)', fontWeight: 600, fontVariantNumeric: 'tabular-nums' }}>{displayRunes.toLocaleString()}</div>
             </div>
           </div>
         </div>
 
         <div>
-          <div className="eyebrow" style={{ color: 'var(--gold-deep)', marginBottom: 12 }}>
+          <div className="eyebrow" style={{ color: 'var(--gold)', marginBottom: 12 }}>
             ‹ Attributes ›
           </div>
           <div>
@@ -495,7 +506,7 @@ export default function AchievementsPage({ onBack }: { onBack: () => void }) {
         </div>
 
         <div style={{ gridColumn: isTablet ? '1 / -1' : 'auto' }}>
-          <div className="eyebrow" style={{ color: 'var(--gold-deep)', marginBottom: 16 }}>
+          <div className="eyebrow" style={{ color: 'var(--gold)', marginBottom: 16 }}>
             ‹ Deeds & Honors ›
           </div>
           <div>
@@ -508,13 +519,18 @@ export default function AchievementsPage({ onBack }: { onBack: () => void }) {
 
         <div style={{ height: 1, background: 'linear-gradient(90deg, transparent, rgba(212,168,81,.3) 20%, rgba(212,168,81,.3) 80%, transparent)' }} />
 
+        {/* the presidency entry above pays off directly into what the term won */}
+        <HonorsBand h={a.honors} isMobile={isMobile} />
+
+        <div style={{ height: 1, background: 'linear-gradient(90deg, transparent, rgba(212,168,81,.3) 20%, rgba(212,168,81,.3) 80%, transparent)' }} />
+
         <div>
-          <div className="eyebrow" style={{ color: 'var(--gold-deep)', marginBottom: 4 }}>
+          <div className="eyebrow" style={{ color: 'var(--gold)', marginBottom: 4 }}>
             ‹ Armaments & Arts ›
           </div>
           <div style={{
             fontFamily: 'var(--serif)', fontStyle: 'italic',
-            fontSize: 14, color: 'var(--parchment-dim)', marginBottom: 22,
+            fontSize: 15.5, color: 'var(--parchment-2)', marginBottom: 24,
           }}>
             The schools of craft this hand has learned.
           </div>
