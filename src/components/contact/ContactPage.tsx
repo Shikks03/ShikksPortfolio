@@ -188,8 +188,13 @@ export default function ContactPage({ onBack }: { onBack: () => void }) {
           <div style={{
             position: 'absolute',
             top: '57%',
-            left: '50%',
-            transform: 'translate(-50%, -50%)',
+            /* left:50% with no width caps the shrink-to-fit box at half the
+               door, which crushed each caption down to the socket's width and
+               broke the email mid-word. Spanning the frame lets them size to
+               their text; justifyContent still centers the cluster. */
+            left: 0,
+            right: 0,
+            transform: 'translateY(-50%)',
             display: 'flex',
             flexDirection: 'row',
             alignItems: 'flex-start',
@@ -359,7 +364,11 @@ export default function ContactPage({ onBack }: { onBack: () => void }) {
                       marginTop: 2,
                       textAlign: 'center',
                       maxWidth: isMobile ? 112 : 'none',
-                      overflowWrap: 'anywhere',
+                      /* handles are single tokens, so on desktop they stay on
+                         one line; only the narrow layout is allowed to break
+                         them, and never mid-word if it can be helped */
+                      whiteSpace: isMobile ? 'normal' : 'nowrap',
+                      overflowWrap: isMobile ? 'anywhere' : 'normal',
                     }}>
                       {h.value}
                     </div>
