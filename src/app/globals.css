@@ -19,7 +19,9 @@
   --ui: var(--font-marcellus), Georgia, serif;
 
   --speed: 1;
-  --grain-opacity: 0.18;
+  /* the grain sits over every glyph on the site; 0.18 was measurably eating
+     into text contrast, 0.14 keeps the texture without blurring small type */
+  --grain-opacity: 0.14;
 }
 
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -134,10 +136,13 @@ body.cursor-rune .cursor { filter: drop-shadow(0 0 4px var(--gold)); }
 }
 .eyebrow {
   font-family: var(--display);
-  font-size: 11px;
-  letter-spacing: .48em;
+  /* 11px at .48em tracking was legible as a shape, not as words. The tracking
+     is still wide enough to read as a label, but the letters now sit close
+     enough to group. */
+  font-size: 12px;
+  letter-spacing: .34em;
   text-transform: uppercase;
-  color: var(--parchment-dim);
+  color: var(--parchment-2);
   font-weight: 400;
 }
 .italic-serif { font-style: italic; font-family: var(--serif); }
